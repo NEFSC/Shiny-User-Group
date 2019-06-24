@@ -1,0 +1,239 @@
+---
+title: 'Supplementary material for "The utility of spatial model-based estimators of unobserved bycatch: future or folly?"'
+author: Brian C. Stock^1^, Eric J. Ward^2^, James T. Thorson^2^, Jason E. Jannot^2^, Brice X. Semmens^1^
+date: ''
+output:
+  pdf_document:
+    fig_caption: yes
+    includes:
+      in_header: options.sty
+header-includes:
+  - \usepackage{hyperref}
+  - \hypersetup{colorlinks=true, linkcolor=red, urlcolor=black}
+  - \usepackage{bm}
+  - \usepackage{float}
+  - \renewcommand{\thetable}{S\arabic{table}}  
+  - \renewcommand{\thefigure}{S\arabic{figure}} 
+csl: ices-journal-of-marine-science.csl
+---
+
+$^1$b1stock@ucsd.edu, semmens@ucsd.edu, Scripps Institution of Oceanography, University of California, San Diego, La Jolla, CA, USA\
+$^2$Northwest Fisheries Science Center, National Marine Fisheries Service, Seattle, WA, USA
+
+\listoftables
+\listoffigures
+
+```{r setup, include=FALSE, echo=FALSE}
+knitr::opts_chunk$set(fig.pos = 'H', echo = TRUE, tidy=FALSE, tidy.opts=list(width.cutoff=60), warning = FALSE, message = FALSE)
+knitr::opts_knit$set(root.dir = '../' )
+library(knitr)
+library(tidyverse)
+library(ggsidekick)
+library(reshape2)
+library(viridis)
+library(date)
+library(gridExtra)
+library(pander)
+library(kableExtra)
+library(png)
+library(forcats)
+```
+
+\pagebreak
+
+\begin{landscape}
+```{r species-list-byyear, echo=FALSE, message=FALSE, warnings=FALSE, results='asis'}
+byyear = readRDS("figures/table1_summary_byspecies/byyear.rds")
+      
+kable(byyear, "latex", booktabs = T, caption="\\label{tab:species-list-byyear}Annual bycatch (mt) and bycatch rate (percent of hauls) for species selected from the U.S. West Coast Groundfish Observer Program (WCGOP) dataset. All selected species are exclusively discarded. The summarized data are 35,440 post-IFQ hauls (4,007 trips) observed from 2011-2015 in the area north of Cape Falcon, Oregon (45.77° N).",
+      caption.short="Annual bycatch (mt) and bycatch rate (percent of hauls) for species selected from the U.S. WCGOP dataset.") %>%
+  kable_styling(latex_options=c("basic","hold_position")) %>% 
+  # landscape() %>%
+  add_header_above(c(" "=1, "2011"=2, "2012"=2, "2013"=2, "2014"=2, "2015"=2))
+```
+\end{landscape}
+
+\pagebreak
+
+## Figure S1
+
+<!-- fig 4 uses raw data so code not included here -->
+```{r effort-bycatch-2, echo=FALSE, message=FALSE, warnings=FALSE, out.width="6in", fig.align = "center", fig.cap="Estimated relationships between fishing effort (haul duration in hours) and bycatch (kg) for 15 species analyzed in the West Coast groundfish trawl fishery. The slope terms, $\\beta$, of log-log linear models are exponents of an assumed power law fit to each species, $\\text{Bycatch} = \\alpha \\text{Effort}^{\\beta}$. Most $\\beta$ are much less than 1, indicating the relationship between bycatch and effort is either weak or not linear. Data ($n = 35,440$) consist of observed hauls from the West Coast Groundfish Observer Program recorded from 2011 to 2015 in the area north of Cape Falcon, Oregon (45.77° N).", fig.scap="Estimated relationships between fishing effort (haul duration in hours) and bycatch (kg) for 15 species analyzed in the West Coast groundfish trawl fishery."}
+# fig_path <- "figures/fig2_effort_bycatch/fig2_effort_bycatch_hauldur.png"
+fig_path <- "../figures/fig2_effort_bycatch/fig2_effort_bycatch_hauldur.png"
+# fig1 <- readPNG(fig1_path, native = TRUE, info = TRUE)
+knitr::include_graphics(fig_path)
+```
+
+\pagebreak
+
+## Figure S2
+
+```{r model-comparison-delta, echo=FALSE, message=FALSE, warnings=FALSE, out.width='7in',fig.height=6, fig.width=7, fig.align = "center", fig.cap="Predictive performance of the ratio estimator (status quo) and two spatial modeling frameworks: generalized additive model (GAM) and random forests (RF). We fit each model to 200 'training' datasets simulated with 20\\% observer coverage, then predicted bycatch in unobserved hauls to calculate annual estimates of fleet-wide bycatch. For each species, the dashed line indicates the median RMSE for the ratio estimator, and solid lines indicate median RMSE for each model. For both GAMs and RFs, the non-delta models outperformed the delta models.", fig.scap="Predictive performance of the ratio estimator (status quo) and two spatial modeling frameworks: generalized additive model (GAM) and random forests (RF)."}
+dat = readRDS("figures/results_summary_depthratio.rds")
+dat <- filter(dat, !(model %in% c("RF Cubist","RF Xu2","RF Xu4")))
+dat$model <- as.character(dat$model)
+
+# for now we'll only plot the simulations with 20% coverage
+dat = filter(dat, pct_trips==0.2)
+
+# facet by species. model options are including space, effort, both, neither (color)
+dat$Covariate = paste(dat$spatial, dat$effort)
+dat$Covariate[which(dat$Covariate==" ")] = "Neither"
+dat$Covariate[which(dat$Covariate=="SP EFF")] = "Space, Effort"
+dat$Covariate[which(dat$Covariate=="SP ")] = "Space"
+dat$Covariate[which(dat$Covariate==" EFF")] = "Effort"
+
+filter_dat = group_by(dat, species, model, Covariate) %>% 
+  mutate(rmse = ifelse(rmse > 10, NA, rmse)) %>% 
+  ungroup() %>% 
+  group_by(species) %>% 
+  mutate(max_rmse = max(rmse,na.rm=T))
+filter_dat$delta <- as.numeric(grepl("Delta", filter_dat$model))
+filter_dat$delta <- factor(filter_dat$delta,labels=c("Non-delta","Delta"))
+
+dat.spatial.eff <- filter(filter_dat, Covariate=="Space, Effort") %>% mutate(medRatio = NA) %>%
+                    filter(model %in% c("Ratio", "GAM Delta", "GAM", "RF Delta", "RF", "RF Best"))
+dat.ratio <- filter(filter_dat, model=="Ratio") %>% group_by(species) %>% mutate(medRatio = median(rmse))
+dat.plot <- rbind(dat.spatial.eff, dat.ratio)
+dat.plot$model <- factor(dat.plot$model, levels = c("Ratio", "GAM Delta", "GAM", "RF Delta", "RF", "RF Best"))
+levels(dat.plot$model) <- c("Ratio", "GAM Delta", "GAM Tweedie", "RF Delta", "RF Total", "RF All")
+
+print(dat.plot %>% 
+  ggplot(aes(model, rmse, fill = model)) + 
+  	geom_violin(draw_quantiles = c(0.5)) +
+  	geom_hline(aes(yintercept = medRatio, group = species), linetype = 2) +
+  	facet_wrap(~ species) + 
+  	theme_sleek() + 
+  	xlab("Model") + 
+  	ylab("Normalized RMSE") + 
+  	theme(axis.text.x = element_text(angle = 90, hjust = 1)) + 
+  	coord_cartesian(ylim = c(0,1)) +
+	scale_fill_manual(name="Model",
+	                  values=c("grey","#E69F0080","#E69F00","#56B4E980","#56B4E9", rgb(t(col2rgb("#56B4E9")/1.4), maxColorValue=255))))
+```
+
+\pagebreak
+
+## Figure S3
+
+```{r covariate-effects, echo=FALSE, message=FALSE, warnings=FALSE, out.width='7in',fig.height=6, fig.width=7, fig.align = "center", fig.cap="Change in predictive performance (normalized RMSE) when adding fishing effort and spatial location as covariates in each model. For many species, adding space to the GAM-Delta and GAM-Tweedie models led to worse predictions (positive change in RMSE, above dashed line). On the other hand, adding space to the RF-Delta model consistently improved predictions (negative change in RMSE, below dashed line). For RF-Total, including space had either slightly improved predictions or had no effect. Adding effort had little effect for nearly all species and models, and never had a larger effect than adding space.", fig.scap="Change in predictive performance (normalized RMSE) when adding fishing effort and spatial location as covariates in each model."}
+dat = readRDS("figures/results_summary_depthratio.rds")
+dat <- filter(dat, !(model %in% c("RF Cubist","RF Xu2","RF Xu4")))
+dat$model <- as.character(dat$model)
+
+dat$Covariate = paste(dat$spatial, dat$effort)
+dat$Covariate[which(dat$Covariate==" ")] = "Neither"
+dat$Covariate[which(dat$Covariate=="SP EFF")] = "Space + Effort"
+dat$Covariate[which(dat$Covariate=="SP ")] = "Space"
+dat$Covariate[which(dat$Covariate==" EFF")] = "Effort"
+
+dat = group_by(dat, model, sim, pct_trips, species) %>% 
+  mutate(null_rmse = ifelse(length(rmse[which(spatial=="" & effort == "")]) > 0, 
+    rmse[which(spatial=="" & effort == "")], NA)) %>% 
+  mutate(diff_rmse = rmse - null_rmse) 
+
+# filter out the null model -- not used in comparison
+dat = filter(dat, pct_trips == 0.2) %>% 
+  filter(diff_rmse != 0 & !is.na(diff_rmse) ) 
+
+# levels(dat$model) <- c("GAM Delta", "GAM Tweedie", "Ratio", "RF All", "RF Delta", "RF Total", "VAST")
+
+group_by(dat, species, model, Covariate) %>%
+  ggplot(aes(model, diff_rmse, fill = Covariate, group = factor(paste0(model, Covariate)))) +
+  facet_wrap(~ species) + 
+  geom_boxplot(outlier.shape = NA) +
+  theme_sleek() + 
+  xlab("Model") + 
+  ylab("Difference in normalized RMSE") + 
+  theme(axis.text.x = element_text(angle = 90, hjust = 1)) + 
+  coord_cartesian(ylim = c(-0.5,0.5)) +
+  scale_fill_brewer(name="Covariates added", type="qual", palette = 1) +
+  geom_hline(yintercept=0, linetype=2, alpha=0.3)
+```
+
+\pagebreak
+
+## Figure S4
+
+```{r coverage-effects, echo=FALSE, message=FALSE, warnings=FALSE, out.width='7in',fig.height=6, fig.width=7, fig.align = "center", fig.cap="Predictive performance (normalized RMSE) for different levels of simulated observer coverage. Averaged across species, RF-Total had lower median RMSE than the ratio estimator, even at half the observer coverage (RF-Total at 20\\%: 0.155, Ratio at 40\\%: 0.180). GAM-Tweedie failed to converge for 3/15 species.", fig.scap="Predictive performance (normalized RMSE) for different levels of simulated observer coverage."}
+dat = readRDS("figures/results_summary_depthratio.rds") # created by /figures/summarize_results.R
+dat <- filter(dat, !(model %in% c("RF Cubist","RF Xu2","RF Xu4")))
+dat$model <- as.character(dat$model)
+
+# facet by species. model options are including space, effort, both, neither (color)
+dat$Covariate = paste(dat$spatial, dat$effort)
+dat$Covariate[which(dat$Covariate==" ")] = "Neither"
+dat$Covariate[which(dat$Covariate=="SP EFF")] = "Space, Effort"
+dat$Covariate[which(dat$Covariate=="SP ")] = "Space"
+dat$Covariate[which(dat$Covariate==" EFF")] = "Effort"
+
+# add "AVERAGE" as a 'species' to put in bottom right panel
+sp.labs <- levels(dat$species)
+dat$species <- as.character(dat$species)
+dat <- dat %>% filter(model %in% c("Ratio", "GAM", "RF"))
+dat.allspecies <- dat %>% filter(model %in% c("Ratio", "RF"))
+dat.allspecies$species = "AVERAGE"
+dat.all <- rbind(dat, dat.allspecies)
+dat.all$species <- factor(dat.all$species, levels = c(sp.labs,"AVERAGE"))
+
+dat.spatial.eff <- filter(dat.all, Covariate=="Space, Effort")
+dat.ratio <- filter(dat.all, model=="Ratio")
+dat.plot <- rbind(dat.spatial.eff, dat.ratio)
+dat.plot$model <- factor(dat.plot$model, levels = c("Ratio", "GAM", "RF"))
+levels(dat.plot$model) <- c("Ratio","GAM Tweedie","RF Total")
+
+print(dat.plot %>%
+  ggplot(aes(model, rmse, fill = as.factor(pct_trips))) + 
+  	geom_violin(draw_quantiles = c(0.5)) +
+  	facet_wrap(~ species) + 
+  	theme_sleek() + 
+  	xlab("Model") + 
+  	ylab("Normalized RMSE") + 
+  	theme(axis.text.x = element_text(angle = 90, hjust = 1)) + 
+  	coord_cartesian(ylim = c(0,1)) +
+	  scale_fill_manual(name="Percent Observed", values=c("deepskyblue2","deepskyblue4")))
+```
+
+\pagebreak
+
+## Figure S5
+
+```{r rf-cubist, echo=FALSE, message=FALSE, warnings=FALSE, out.width="6in", fig.align = "center", fig.cap="Performance of RF bias correction methods (percent error, PE, averaged across years 2011-2015). The ratio estimator is unbiased (median PE = 0.002). RF is positively biased (median PE = 0.055) and Cubist is less positively biased (median PE = 0.043). Cubist reduces bias by fitting a linear model in regression tree terminal nodes instead of using the data mean (Quinlan 1992, Quinlan 1993). The second method, Xu (2013), fits a second RF model to the residuals of the original RF, but this method performed poorly (median PE = 1.107, off chart).", fig.scap="Performance of RF bias correction methods (percent error, PE, averaged across years 2011-2015)."}
+dat = readRDS("figures/results_summary_depthratio.rds")
+
+# facet by species. model options are including space, effort, both, neither (color)
+dat$Covariate = paste(dat$spatial, dat$effort)
+dat$Covariate[which(dat$Covariate==" ")] = "Neither"
+dat$Covariate[which(dat$Covariate=="SP EFF")] = "Space, Effort"
+dat$Covariate[which(dat$Covariate=="SP ")] = "Space"
+dat$Covariate[which(dat$Covariate==" EFF")] = "Effort"
+
+dat = filter(dat, pct_trips==0.2) %>% filter(species=="Dungeness crab")
+
+dat.spatial.eff <- dat %>% group_by(species) %>% mutate(medRatio = NA) %>% 
+                    filter(model %in% c("RF", "RF Cubist", "RF Xu2")) %>% filter(Covariate=="Space, Effort")
+dat.ratio <- dat %>% filter(model=="Ratio") %>% group_by(species) %>% mutate(medRatio = median(rmse))
+dat.plot <- rbind(dat.spatial.eff, dat.ratio)
+dat.plot$model <- factor(dat.plot$model, levels = c("Ratio", "RF", "RF Cubist", "RF Xu2"))
+levels(dat.plot$model) <- c("Ratio", "RF", "RF Cubist", "RF Xu")
+
+# gather annual estimates
+dat.plot <- as.data.frame(tidyr::gather(dat.plot, year, pe, c("pe_2011","pe_2012","pe_2013","pe_2014","pe_2015")))
+dat.plot$year <- gsub("pe_", "", dat.plot$year)
+dat.plot$year <- as.factor(dat.plot$year)
+
+print(dat.plot %>% #group_by(species, model) %>%
+  ggplot(aes(x=model, y=pe, fill = model)) + 
+    geom_violin(draw_quantiles = c(0.5)) +
+    geom_hline(aes(group = species), yintercept = 0, linetype = 2) +
+    facet_wrap(~ species) + 
+    theme_sleek() + 
+    xlab("Model") + 
+    ylab("Percent Error") + 
+    coord_cartesian(ylim = c(-0.5,0.5)) +
+  scale_fill_manual(name="Model", values=c("grey","#56B4E9",
+                                           rgb(t(col2rgb("#56B4E9")/1.4), maxColorValue=255),
+                                           rgb(t(col2rgb("#56B4E9")/2), maxColorValue=255))))
+```
+

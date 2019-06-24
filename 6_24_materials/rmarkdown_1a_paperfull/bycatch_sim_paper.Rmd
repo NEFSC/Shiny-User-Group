@@ -1,0 +1,651 @@
+---
+title: 'The utility of spatial model-based estimators of unobserved bycatch: future or folly?'
+author: Brian C. Stock^1^, Eric J. Ward^2^, James T. Thorson^3^, Jason E. Jannot^3^, Brice X. Semmens^1^
+date: ''
+output:
+  pdf_document:
+    keep_tex: true
+    fig_caption: yes
+    includes:
+      in_header: options.sty
+csl: ices-journal-of-marine-science.csl
+bibliography: bycatch_simulation.bib
+---
+
+```{r setup, include=FALSE, echo=FALSE}
+knitr::opts_chunk$set(echo = TRUE, tidy=FALSE, tidy.opts=list(width.cutoff=60), warning = FALSE, message = FALSE)
+knitr::opts_knit$set(root.dir = '../' )
+library(knitr)
+library(tidyverse)
+library(ggsidekick)
+library(reshape2)
+library(viridis)
+library(date)
+library(gridExtra)
+library(pander)
+library(kableExtra)
+library(png)
+library(forcats)
+```
+
+$^1$+1 425 919 7879, b1stock@ucsd.edu, semmens@ucsd.edu, Scripps Institution of Oceanography, University of California, San Diego, La Jolla, California 92093 USA\
+$^2$eric.ward@noaa.gov, Conservation Biology Division, Northwest Fisheries Science Center, National Marine Fisheries Service, National Oceanic and Atmospheric Administration, 2725 Montlake Blvd E, Seattle WA, 98112, USA\
+$^3$james.thorson@noaa.gov, jason.jannot@noaa.gov, Fisheries Resource and Monitoring Division, Northwest Fisheries Science Center, National Marine Fisheries Service, National Oceanic and Atmospheric Administration, 2725 Montlake Blvd E, Seattle WA, 98112, USA\
+
+
+## Abstract
+
+Quantifying effects of fishing on non-targeted (bycatch) species is an important management and conservation issue. Bycatch estimates are typically calculated using data collected by on-board observers, but observer programs are costly and therefore often only cover a small percentage of the fishery. The challenge is then to estimate bycatch for the unobserved fishing activity. The status quo for most fisheries is to assume the ratio of bycatch-to-effort is constant and multiply this ratio times the effort in the unobserved activity (ratio estimator). We used a dataset with 100% observer coverage, 35,440 hauls from the U.S. West Coast groundfish trawl fishery, to evaluate the ratio estimator against methods that utilize fine-scale spatial information: generalized additive models (GAMs) and random forests. Applied to 15 species representing a range of bycatch rates, including spatial locations improved model predictive ability, whereas including effort-associated covariates generally did not. Random forests performed best for all species (lower root mean square error), but were slightly biased (overpredicting total bycatch). Thus, the choice of bycatch estimation method involves a tradeoff between bias and precision, and which method is optimal may depend on the species bycatch rate and how the estimates are to be used.
+
+## Keywords
+
+bycatch estimation, fishing effort, ratio estimator, spatial model, GAM (generalized additive model), random forest, bias-variance tradeoff, U.S. west coast groundfish fishery
+
+## Introduction  
+  
+The incidental bycatch of non-targeted species by fisheries in the US and around the world has been highlighted as an issue of both conservation concern and fisheries inefficiency [@harrington2005], and reducing or eliminating bycatch and incidental mortality is a goal of many fisheries around the world. There are several reasons why a species might be considered bycatch or discarded: the species may be of little or no commercial value, the species may be protected (e.g. marine mammals, turtles, birds), the species may be permitted to be caught but in a different fishery, or the quota for the targeted species in a given time period may be exceeded. In addition to making fisheries more efficient, reducing bycatch can have positive socioeconomic benefits to fishers. Two such examples include: fisheries remaining open longer (before bycatch quotas are met), and valuable stocks rebuilding more quickly due to reductions in take of overfished bycatch species [@nmfs2016bycatch]. 
+
+Quantifying the amount of bycatch or discards for a given fishery can be challenging. One of the most reliable sources of information is the use of onboard scientific observers. Because observer programs are typically expensive, few fisheries around the world are able to maintain 100% observer coverage. Instead, a subset of fishing activities is typically monitored (trips, vessels). Assuming these observed units are representative of unobserved fishing, ratio estimators can be used to expand the observed bycatch ratio (i.e. the ratio of bycatch-to-effort) to the remainder of the fishery. In situations where bycatch rates are assumed to vary by strata (e.g. by season, depth, or latitude), the ratio estimator can be applied separately to each stratum and then summed to generate a total index of bycatch, 
+$\sum_{ s=1 }^{ S }{ \frac { { d }_{ s } }{ { r }_{ s } }  } { R }_{ s }$, where ${ d }_{ s }$ is the observed bycatch or discards for stratum *s*, ${ r }_{ s }$ is the retained observed catch for stratum *s* and ${ R }_{ s }$ is the total landed catch in stratum *s* [@cochran1963]. Importantly, ratio estimators do not incorporate a formal underlying statistical model (i.e. are free of any assumptions regarding data structure), and are thus sample-based estimators, rather than model-based estimators [@mccracken2000]. These stratified ratio estimators have been widely used around the world and applied to estimates of both discards [@anderson2003; @amande2010a] and protected species [@rogan2007].
+
+Despite their widespread use, there are a number of potential issues in applying ratio estimators to enumerate fleetwide bycatch. First, using observed catches of target species or any other measure of effort implicitly makes an assumption about a linear relationship between non-target and target catches [@fonteneau2003]. This may be unrealistic, particularly as the distribution of catches of non-target species is often zero-inflated, or has a small number of observations containing extremely high values [@ortiz2004; @rochet2005]. Second, for species with low bycatch rates in fisheries with low observer coverage (i.e. rare-event bycatch), it is common for zero bycatch events to be observed in a given year (ratio estimator = 0), and when bycatch events are observed, the ratio estimator often delivers implausibly high estimates [@mccracken2004; @martin2015]. Third, the boundaries of strata used in a ratio estimator can be somewhat arbitrary whenever post-stratified boundaries are used (as is common in multispecies sampling designs). A fourth and related point is that within each stratum, bycatch rates are assumed to be uniform, while in reality they may vary by season, depth, or other factors. 
+
+One of the biggest questions related to bycatch estimation is whether model-based estimators that incorporate explicit spatial information (beyond any implicit spatial information incorporated by strata) offer any advantage over the widely used stratified ratio estimator. Like fishery independent catch per unit effort (CPUE) data, fishery dependent bycatch patterns are spatially correlated [@lewison2009]. Accounting for spatial correlation in model-based estimators has been extensively summarized in the geostatistical literature [e.g. @brus1997; @grondona1991]. Similar comparisons have recently been applied to index standardization of fisheries survey data [@maunder2004]. In the majority of cases, spatially explicit model-based estimators have increased precision relative to simpler estimators that assign observations to strata [@thorson2013; @shelton2014; @thorson2015]. There are a number of additional advantages of spatial models, including the ability to better quantify shifts in distribution [@thorson2016], and improved ability to identify fine scale hotspots of high bycatch [@cosandey-godin2014; @ward2015]. While the majority of these recent analyses of fishery dependent data have relied on parametric methods [delta-GLMM models; @thorson2013], semi- or non-parametric models such as generalized additive models (GAMs) or random forests (RFs) have also been used to include spatial variation [@winker2013a; @li2015; @thorson2015].
+
+While recent work has included fishing location information in spatial model-based estimates of bycatch [@orphanides2009], there is little guidance on how to model spatiotemporal variation, and how different spatial modeling approaches compare in their bias or precision against the traditional ratio estimator. To evaluate these different bycatch estimators, we developed a simulation study from observer data collected from the West Coast Groundfish Observer Program (WCGOP) at the Northwest Fisheries Science Center. While observers have been monitoring a portion of trips in the groundfish fishery since 2002, since 2011 regulations require an observer on every groundfish trip (100% coverage). Thus, years with 100% coverage can be subsampled to generate smaller datasets that can be used to expand estimates to the fleet total, and the relative performance of different methods can be compared because the true bycatch is known. We begin by using the entirety of the dataset to test the ratio estimator assumption of a linear relationship between bycatch and available metrics of fishing effort. Next, we use randomly generated subsamples of the observer data to evaluate (1) the relative performance of spatial model-based bycatch estimates against the conventional stratified ratio estimator, and (2) the sensitivity of model performance to varying levels of observer coverage.
+
+## Methods
+
+### Fisheries observer data
+
+To evaluate the performance of ratio estimators versus spatial model-based estimates of fleet-wide bycatch, we used a dataset from the United States with 100% observer coverage, the West Coast Groundfish Observer Program (WCGOP) of the Northwest Fisheries Science Center [NWFSC, @bellman2010]. The WCGOP monitors commercial bottom trawls on the west coast of the USA, which primarily target groundfish such as Dover sole (*Microstomus pacificus*), thornyheads (*Sebastolobus spp.*), sablefish (*Anoplopoma fimbria*), and rockfish (*Sebastes spp.*). The fishery moved to an individual fishing quota (IFQ) system with 100% observer coverage in 2011, and we used the 35,440 post-IFQ hauls (4,007 trips) observed from 2011-2015 in the area north of Cape Falcon, Oregon (45.77° N, Fig. \ref{fig:effort}). In 2015, a small portion of the fleet began experimenting with the use of electronic monitoring equipment in lieu of an observer. We excluded any such trips from our analysis. Observers recorded haul duration, location, date, time, depth, gear type, and at-sea catch including at-sea discarded bycatch [for details see NWFSC -@nwfsc2016]. Because fishermen are permitted to land a low quota of valuable non-target species under IFQ management, we only considered 15 species that are exclusively discarded and cover wide ranges of bycatch rates and levels of management concern (Table \ref{tab:species-list}). Species such as Dungeness crab or Pacific halibut are of high value, but as each are permitted in other fisheries, they are considered bycatch in the groundfish fishery.
+
+### Relationship between bycatch and effort
+
+While the stratified ratio estimator typically involves multiplying the bycatch-to-target catch ratio by the total target catch within strata, it is certainly possible to replace target catch with other metrics of effort, such as haul duration. This may be advantageous if a linear relationship exists between bycatch and haul duration, but not between bycatch and target catch. To investigate whether there was a linear relationship between bycatch and available metrics of fishing effort, retained catch of target species (kg) and haul duration (minutes), we fit log-log linear models for each species:
+$$ log(\text{Bycatch}) = \alpha + \beta \ log(\text{Effort}) + \epsilon$$
+$$ \epsilon \sim \mathcal{N}(0,\,\sigma^{2})$$
+The slope term, $\beta$, of a log-log linear model is the exponent of an assumed power law, i.e:
+$$ \text{Bycatch} = e^\alpha \ \text{Effort}^{\beta} \ e^\epsilon$$
+Thus, if a linear relationship between bycatch and fishing effort exists, the power law exponent should equal one ($\beta = 1$). Exponents greater than one ($\beta > 1$) imply positive concavity and exponents less than one ($\beta < 1$) imply negative concavity, while $\beta = 0$ if no relationship exists.
+
+### Simulation design
+
+We compared the performance of the stratified ratio estimator with three spatial modeling frameworks: GAM, VAST, and RF. All analyses were conducted using R v3.4.4 [@rcoreteam2018]. We designed our data sub-sampling experiment to calculate predictive performance by cross-validation. We generated 200 'training' datasets with reduced observer coverage (e.g. 20%, 40%), by sampling trips (collections of hauls) without replacement from the complete dataset. We used trip as the cross-validation sample unit because this mirrors sampling schemes in observer programs with less than 100% coverage (i.e. observers are placed on vessels on a trip-by-trip basis, and then observe all hauls within the trip). These training datasets were generated once for all species, so that models were evaluated against the same simulated datasets. Hauls from unobserved trips were then used as the 'test' dataset to evaluate predictions. This repeated training/test split procedure is also known as "leave-group-out cross-validation" or "Monte Carlo cross-validation," and a set of 200 train/test splits is recommended as a good sample size [@kuhn2013].
+
+#### Status quo: ratio estimator
+
+We implemented the stratified ratio estimator as described in the Introduction and @bellman2010, where observed estimates of bycatch in each strata are expanded based on the ratio of observed to total effort (total target catch or haul duration) and total estimates are generated as sums over strata [@cochran1963]. An important note from a modeling perspective is that the ratio estimator is stratified by year (5 levels: 2011, 2012, 2013, 2014, 2015), season (two levels: summer, winter), depth (three levels: 0-125, 126-250, > 250 fathoms), and bimonthly period (six levels: Jan-Feb, Mar-Apr, ... , Nov-Dec). Any stratum with zero sampled bycatch is expanded to predict zero total bycatch in that stratum.
+
+#### Spatial framework #1: generalized additive models (GAMs)
+
+We fit GAMs using two alternative methods of accounting for zeros. Our first approach, the "GAM-Delta" model, partitioned the data into separate presence/absence ('binomial') and 'positive' components [a delta, or hurdle, model as in @pennington1983; @maunder2004]. The GAM-Delta model estimates of total density were then calculated by multiplying the binomial and positive components [as in @lo1992]. The second approach, the "GAM-Tweedie" model, treats zero inflated catch data as arising from a Tweedie distribution with power parameter $1 < p < 2$, which is a compound Poisson process where catch is modeled as the sum of $N$ independent gamma random variables, with $N$ following a Poisson distribution [@tweedie1984]. Assuming a Tweedie distribution is reasonable, as the haul catch (weight) can be thought of as a sum of the weight of $N$ fish, where the weight of each fish is gamma-distributed [@candy2004]. Importantly, this allows for hauls with zero catch, since $N$ can be zero. We estimated the Tweedie power parameter, $p$, for each species outside the model using maximum likelihood, and then fit GAMs using these fixed, species-specific $p$ values.
+
+We fit both the GAM-Delta and GAM-Tweedie models using the 'mgcv' library [v1.8-17, @wood2006] and the same covariates as the ratio estimator, adding a 2D thin plate regression spline on location:
+
+$$ \text{bycatch} \sim \text{year} + \text{season} + \text{bimonth} + \text{bimonth}^2 + \text{depth interval} + \text{s}(\text{lat}, \text{long}, k=50) $$
+
+Tensor product splines were also considered for the 2D spline, since they are designed for cases where the scale differs in the two dimensions (as in our case, along- vs. cross-shore distance). We used thin plate regression splines instead, however, because they had better predictive performance in preliminary testing. We used the same factor covariates as the ratio estimator (fixed effects of year, season, bimonthly period, and depth interval) for two reasons. First, this offered a more direct comparison between the ratio estimator and GAMs. Second, this analysis aims to inform the process of producing yearly bycatch estimates for dozens of species in a highly multispecies trawl fishery, where lengthy model selection is impractical given current logistical constraints [@bellman2010].
+
+We fit four variations of each GAM model to determine the effect of including location and effort on predictive performance: no effort or location, location only, effort only, and both location and effort. 
+
+#### Spatial framework #2: random forests (RFs)
+
+Similar to the GAMs, we fit two random forest models. "RF-Delta" considered the binomial and positive data independently and multiplied them together to calculate total bycatch density. "RF-Total" treated the binomial and positive data as occurring from the same process in a single model. 
+
+We used 'randomForest' [v4.6-12, @liaw2002] to fit the RFs, and we used the same covariates as the ratio estimator and GAMs, plus linear and quadratic terms for location:
+
+$$ \text{bycatch} \sim \text{year} + \text{season} + \text{bimonth} + \text{bimonth}^2 + \text{depth interval} + \text{lat} + \text{lat}^2 + \text{lon} + \text{lon}^2$$
+
+Since RFs are claimed to not overfit data [@breiman2001] and suffer less from incorporating numerous, possibly correlated and uninformative covariates [@biau2016], we fit a third RF model using all available covariates without stratification. We expected this "RF-All" model to outperform the RF-Delta and RF-Total models because, presumably, information is lost by not including covariates (haul number in trip, gear, time of day) and stratifying depth (to depth interval), date (to season and bimonthly period), and location (areas by latitude). We included day-of-year and hour-of-day as periodic functions (i.e. $\text{sinhour} = sin \left[ \frac{2 \pi \text{hour}}{24} \right]$):
+
+$$ \text{bycatch} \sim \text{year} + \text{depth} + \text{haul number} + \text{gear} + \text{cosday} + \text{sinday} + \text{coshour} + \text{sinhour} + \text{lat} + \text{lat}^2 + \text{lon} + \text{lon}^2$$
+
+### Model evaluation
+
+For each simulated dataset, we calculated model performance as root mean square error (RMSE) using the predicted and observed bycatch. RMSE was calculated by year, and also averaged across years. As RMSE can be expressed as the sum of variance and squared bias, we also generated estimates of the bias from each prediction, in order to better understand the relative contributions to total RMSE (in other words, why some models do better than others).
+
+## Results
+
+### Weak relationship between effort and bycatch
+
+For nearly all of the 15 species included in our analysis, we found that relationships between bycatch and effort (both target catch and haul duration) were either weak or nonlinear, as most power law exponents from the log-log regression were much less than 1 (25/30 < 0.5, Figs. \ref{fig:effort-bycatch-slopes}, \ref{fig:effort-bycatch}, and \ref{fig:effort-bycatch-2}). In only a few cases were the estimated coefficients close to 1.0 (the relationship assumed when effort is included as an offset).
+
+### Model comparison: RF had lower error but slight bias
+
+Compared to the ratio estimator, we found that the RF-Total model (not applying a hurdle or delta model) produced estimates of total bycatch that had lower RMSE (26% lower averaged across species, Fig. \ref{fig:model-comparison}). For most species and years, median bycatch estimates from the ratio estimator and RF-Total were close to each other and the true, observed bycatch, but the RF-Total model was more precise (Fig. \ref{fig:model-comparison-byyear-catch}). However, RF-Total had higher bias compared to the ratio method (median percent error across all species and years: RF = 0.068, Ratio = -0.011, Fig. \ref{fig:model-comparison-byyear}). The GAM-Tweedie model appeared to have convergence issues for some simulations in one-fifth of the species (Black skate, California slickhead, and Grenadier), but for the simulations that did converge, it performed similarly to the ratio estimator (Fig. \ref{fig:model-comparison}).
+
+Though delta models have been widely used in the index standardization of fisheries data [@maunder2004], both GAM and RF models with an aggregated response consistently outperformed delta models (Fig. \ref{fig:model-comparison-delta}).
+
+### Effect of including fishing effort and spatial locations
+
+We found minimal gain in predictive performance when fishing effort was included as a covariate. In all models compared, any effect of effort was smaller than the effect of including spatial locations (Fig. \ref{fig:covariate-effects}). An important difference between the GAM and RF models was that for many species, adding spatial locations to GAMs led to worse predictions, while adding location information to the RF models either improved predictions (especially for RF-Delta) or had no effect.
+
+### Influence of data richness on model performance
+
+As expected, model performance improved for higher observer coverage (20% vs. 40%, Fig. \ref{fig:coverage-effects}). Averaged across species, RF had markedly lower median RMSE than the ratio estimator. In fact, the RF models based on 20% observer coverage (0.155 median RMSE) outperformed the ratio estimator based on 40% observer coverage (0.180 median RMSE). Similarly, the performance advantage (indicated by lower RMSE) of RF over the ratio estimator was most pronounced for species with low bycatch rates, and decreased for species with higher bycatch rates (Fig. \ref{fig:bycatch-rate-rmse}).
+
+## Discussion
+
+In terms of the relative performance across models, our results are consistent with previous studies showing that non-parametric methods such as random forests offer improved predictive capabilities over GAMs and delta-GLMM models [@rooper2017; @marmion2009; @knudby2010]. Including the spatial location of fishing offered a considerable improvement in RMSE for many species, particularly in the RF-Delta modeling framework (Fig. \ref{fig:covariate-effects}). However, once spatial information was included, the addition of effort had a minimal effect in reducing RMSE. This result is not surprising, given the weak relationships between bycatch and effort revealed by our log-log analyses (Figs. \ref{fig:effort-bycatch-slopes}, \ref{fig:effort-bycatch}, and \ref{fig:effort-bycatch-2}). We found decreases in RMSE for all species and models as observer coverage increased from 20% to 40% (Fig. \ref{fig:coverage-effects}). The improvement in predictive capabilities with increasing observer coverage is consistent with previous simulation experiments using different fisheries [@amande2010b; @babcock2003]. 
+
+For an observer program tasked with producing yearly bycatch estimates for many species, the ideal bycatch estimation model is simple, converges rapidly, performs well on average, and never performs much worse than a default option like a ratio estimator. Therefore, the fact that RF had equal or lower prediction error than the ratio estimator for all species and scenarios is an important finding. The desire for one simple model also informed our selection of candidate models; we did not test an exhaustive list of modeling options for spatiotemporal bycatch data, but a subset of models that analysts are familiar with and can apply quickly. We assumed that each species in our simulations were affected by the same set of covariates; ideally, a single best model could be developed for each species in a given fishery, with unique covariates. We also restricted covariates in our analysis to the same information that is typically used in the ratio estimator, even though some covariates (e.g. depth, date of year) could be treated as continuous rather than discrete factor variables. However, including all available covariates without stratification in a RF model, RF-All, actually performed worse than the model with fewer, stratified covariates, RF-Total (Fig. \ref{fig:model-comparison-delta}). While RF are touted as robust to overfitting and the inclusion of noninformative covariates [@breiman2001; @biau2016], one possible explanation for this result is that RF-All did overfit the data.
+
+The second important finding from our simulations with practical implications for management is that the choice of one estimator over another is accompanied by an implicit tradeoff between bias and variance. While RF had equal or lower prediction error than the ratio estimator for all species, RF was slightly biased high (overestimating true bycatch, Fig. \ref{fig:model-comparison-byyear}). On the other hand, RF estimates were much less variable than the ratio estimator. This bias-variance tradeoff was apparent for all species in our simulations (Fig. \ref{fig:variance-bias}), but depended on the species' bycatch rate (Fig. \ref{fig:bycatch-rate-rmse}). For commonly-caught species like Sandpaper skate or Brown cat shark, where RF and the ratio estimator had similar RMSE, RF offered slight reductions in uncertainty but had large increases in bias. For rarely-caught species, like California slickhead or Dungeness crab, RF exchanged large reductions in uncertainty for modest increases in bias. The recommendation of one methodology over another largely depends on what the bycatch estimates will be used for. Stock assessment scientists, for example, may be largely interested in unbiased but imprecise estimates, such as the ratio estimator, which can then be fitted and smoothed statistically during model fitting. On the other hand, scientists or policy makers who are more concerned about relative changes in bycatch over time may prefer more precise estimators (such as RF) that are more robust to noise arising from sampling less than 100% of the fishery. We recommend further research regarding circumstances when it is important to minimize bias versus imprecision when processing data for inclusion in a second-stage model [@szpiro2013].
+
+The bias of a RF model is roughly equal to the bias of the individual regression trees it comprises, so it should not be expected to produce unbiased estimates [@breiman1999; @kuhn2013; @xu2013]. RF bias depends on the response variable distribution--RF will be unbiased for a uniform response, and we can expect positive bias for typical fisheries catch distributions (positive, right-skewed). Why? Consider how each individual tree in a RF generates predictions for the tails of a distribution. Terminal nodes for extreme values use the mean of the training data in those nodes, so trees tend to overpredict in the lower tail and underpredict in the upper tail. Because bycatch is right-skewed, there are more observations in the lower tail, and therefore more overprediction than underprediction. Several bias correction methods have been proposed, and we tested two: 1) Cubist, which fits a linear model in terminal nodes instead of using the data mean [@quinlan1992; @quinlan1993], and 2) @xu2013, which fits a second RF model to the residuals of the original RF. Unfortunately, Cubist reduced but did not eliminate bias, and @xu2013 performed poorly (e.g. for Dungeness crab, Cubist reduced median percent error from 0.055 to 0.043, Fig. \ref{fig:rf-cubist}).
+
+Based on the results from our simulation study, there are several potential avenues of future research that will help to advance the inclusion of spatial information into bycatch estimation. First, additional work could be done to improve variance estimation for non-parametric methods such as RF. Resampling or bootstrapped estimates could be generated for fisheries with less than 100% observer coverage, and variance estimates could be compared to analytic estimates via the ratio estimator [@cochran1963]. Second, it may be useful to perform a more detailed comparison between the models used here, and the spatiotemporal delta-GLMM models that have been widely used for fisheries survey data [@thorson2015]. Similarly, multispecies spatiotemporal models may improve predictions of local density by sharing information about underlying spatial patterns [@latimer2009; @warton2015; @ovaskainen2016; @thorson2017; @thorson2017vast]. Additionally, advice on the number and distribution of knots or random effects in spatiotemporal models would be useful for analysts interested in applying these models.
+
+## Supplementary material
+
+The following supplementary material is available online:
+
+Table S1 - 
+Figure S1 - 
+Figure S2 - 
+Figure S3 - 
+Figure S4 - 
+Figure S5 - 
+
+## Acknowledgements
+BCS received support from the National Science Foundation Graduate Research Fellowship under Grant No. DGE-1144086, as well as a Graduate Research Internship Program allowance. The authors thank the WCGOP staff at the NWFSC, and the dedicated observers who made this work possible.   
+
+## References
+
+<div id="refs"></div>
+
+\pagebreak
+
+```{r species-list, echo=FALSE, message=FALSE, warnings=FALSE, results='asis'}
+allyears = readRDS("figures/table1_summary_byspecies/allyears.rds")
+      
+kable(allyears, "latex", booktabs = T, caption="\\label{tab:species-list}Total bycatch (mt) and bycatch rate (percent of hauls) for species selected from the U.S. West Coast Groundfish Observer Program (WCGOP) dataset. All selected species are exclusively discarded. The summarized data are 35,440 post-IFQ hauls (4,007 trips) observed from 2011-2015 in the area north of Cape Falcon, Oregon (45.77° N).") %>%
+  kable_styling(latex_options=c("basic"))
+```
+
+\pagebreak
+
+```{r species-list-byyear, echo=FALSE, message=FALSE, warnings=FALSE, results='asis'}
+byyear = readRDS("figures/table1_summary_byspecies/byyear.rds")
+      
+kable(byyear, "latex", booktabs = T, caption="\\label{tab:species-list-byyear}Total bycatch (mt) and bycatch rate (percent of hauls) for species selected from the U.S. West Coast Groundfish Observer Program (WCGOP) dataset. All selected species are exclusively discarded. The summarized data are 35,440 post-IFQ hauls (4,007 trips) observed from 2011-2015 in the area north of Cape Falcon, Oregon (45.77° N).") %>%
+  kable_styling(latex_options=c("basic")) %>% 
+  landscape() %>%
+  add_header_above(c(" "=1, "2011"=2, "2012"=2, "2013"=2, "2014"=2, "2015"=2))
+```
+
+\pagebreak
+
+<!-- Figure 1, uses raw data so code not included here -->
+<!-- https://www.zevross.com/blog/2017/06/19/tips-and-tricks-for-working-with-images-and-figures-in-r-markdown-documents/ -->
+```{r effort, echo=FALSE, message=FALSE, warnings=FALSE, out.width="2.5in", fig.align = "center", fig.cap="Fishing effort density in the West Coast groundfish trawl fishery from 2011 to 2015 in the area north of Cape Falcon, Oregon (45.77° N). The West Coast Groundfish Observer Program monitored and collected data from 35,440 hauls from all (100\\%) of the 4,007 trips. Fishing effort was smoothed using a bivariate kernel density estimate ('bkde2D' function in R package 'KernSmooth') to ensure that fishing locations were anonymized."}
+# fig1_path <- "figures/fig1_effort_density/fig1_effort_density.png"
+fig1_path <- "../figures/fig1_effort_density/fig1_effort_density.png"
+# fig1 <- readPNG(fig1_path, native = TRUE, info = TRUE)
+knitr::include_graphics(fig1_path)
+```
+
+\pagebreak
+
+<!-- uses raw data so code not included here -->
+```{r effort-bycatch-slopes, echo=FALSE, message=FALSE, warnings=FALSE, out.width="6in",fig.align = "center", fig.cap="Estimated relationships between fishing effort, defined as haul duration (hours, left panel) or catch of target species (kg, right panel), and bycatch for 15 species analyzed in the West Coast groundfish trawl fishery. The slope terms, $\\beta$, of log-log linear models are exponents of an assumed power law fit to each species, $\\text{Bycatch} = \\alpha \\text{Effort}^{\\beta}$, with 95\\% CIs shown for each estimate. Most $\\beta$ are much less than 1 (left of dashed line), indicating the relationship between bycatch and effort is either weak or less-than-linear. Data ($n = 35,440$) consist of observed hauls from the West Coast Groundfish Observer Program recorded from 2011 to 2015 in the area north of Cape Falcon, Oregon (45.77° N)."}
+# fig2_path <- "figures/fig2_effort_bycatch/fig2_effort_bycatch_target_nozeros.png"
+fig_path <- "../figures/fig2_effort_bycatch/fig2_effort_bycatch_caterpillar.png"
+# fig1 <- readPNG(fig1_path, native = TRUE, info = TRUE)
+knitr::include_graphics(fig_path)
+```
+
+\pagebreak
+
+<!-- Figure 3, uses raw data so code not included here -->
+```{r effort-bycatch, echo=FALSE, message=FALSE, warnings=FALSE, out.width="6in", fig.align = "center", fig.cap="Relationship between fishing effort (catch of target species in kg) and bycatch (kg) of 15 selected species in the West Coast groundfish trawl fishery. The slope terms, $\\beta$, of log-log linear models are exponents of an assumed power law fit to each species, $\\text{Bycatch} = \\alpha \\text{Effort}^{\\beta}$. All $\\beta$ are much less than 1, indicating the relationship between Bycatch and Effort is either weak or less-than-linear. Each data point ($n = 35,440$) is an observed haul from the West Coast Groundfish Observer Program recorded from 2011 to 2015 in the area north of Cape Falcon, Oregon (45.77° N)."}
+# fig2_path <- "figures/fig2_effort_bycatch/fig2_effort_bycatch_target_nozeros.png"
+fig2_path <- "../figures/fig2_effort_bycatch/fig2_effort_bycatch_target_nozeros.png"
+# fig1 <- readPNG(fig1_path, native = TRUE, info = TRUE)
+knitr::include_graphics(fig2_path)
+```
+
+\pagebreak
+
+<!-- fig 4 uses raw data so code not included here -->
+```{r effort-bycatch-2, echo=FALSE, message=FALSE, warnings=FALSE, out.width="6in", fig.align = "center", fig.cap="Estimated relationships between fishing effort (target catch in kg, haul duration in hours) and bycatch (kg) for 15 species analyzed in the West Coast groundfish trawl fishery. The slope terms, $\\beta$, of log-log linear models are exponents of an assumed power law fit to each species, $\\text{Bycatch} = \\alpha \\text{Effort}^{\\beta}$, with 95-percent CIs shown for each estimate. Most $\\beta$ are much less than 1, indicating the relationship between bycatch and effort is either weak or not linear. Data ($n = 35,440$) consist of observed hauls from the West Coast Groundfish Observer Program recorded from 2011 to 2015 in the area north of Cape Falcon, Oregon (45.77° N)."}
+# fig_path <- "figures/fig2_effort_bycatch/fig2_effort_bycatch_hauldur.png"
+fig_path <- "../figures/fig2_effort_bycatch/fig2_effort_bycatch_hauldur.png"
+# fig1 <- readPNG(fig1_path, native = TRUE, info = TRUE)
+knitr::include_graphics(fig_path)
+```
+
+\pagebreak
+
+```{r model-comparison, echo=FALSE, message=FALSE, warnings=FALSE, fig.height=6, fig.width=7, fig.align = "center", fig.cap="Predictive performance of the ratio estimator (status quo) and two spatial modeling frameworks: generalized additive model (GAM) and random forest (RF). We fit each model to 200 'training' datasets simulated with 20\\% observer coverage, then predicted bycatch in unobserved hauls to calculate annual estimates of fleet-wide bycatch. We calculated model performance (RMSE) using the true, observed bycatch. For each species, the dashed line indicates the median RMSE for the ratio estimator, and solid lines indicate median RMSE for each model. The GAM-Tweedie had convergence issues for 3/15 species. RF-Total outperformed the ratio estimator for all species, and on average had 26\\% lower RMSE (RF = 0.16, Ratio = 0.22)."}
+# dat = readRDS("figures/results_summary.rds")
+dat = readRDS("figures/results_summary_depthratio.rds") 
+dat <- filter(dat, !(model %in% c("RF Cubist","RF Xu2","RF Xu4")))
+dat$model <- as.character(dat$model)
+
+# for now we'll only plot the simulations with 20% coverage
+dat = filter(dat, pct_trips==0.2)
+
+# facet by species. model options are including space, effort, both, neither (color)
+dat$Covariate = paste(dat$spatial, dat$effort)
+dat$Covariate[which(dat$Covariate==" ")] = "Neither"
+dat$Covariate[which(dat$Covariate=="SP EFF")] = "Space, Effort"
+dat$Covariate[which(dat$Covariate=="SP ")] = "Space"
+dat$Covariate[which(dat$Covariate==" EFF")] = "Effort"
+
+# --------------------------------------------------------------
+# v4: Ratio, GAM-Tweedie, RF-Total, and VAST (no effort)
+#   - add "AVERAGE" last panel summarizing across all species
+sp.labs <- levels(dat$species)
+dat$species <- as.character(dat$species)
+dat.allspecies <- dat
+dat.allspecies$species = "AVERAGE"
+dat.all <- rbind(dat, dat.allspecies)
+dat.all$species <- factor(dat.all$species, levels = c(sp.labs,"AVERAGE"))
+
+filter_dat = group_by(dat.all, species, model, Covariate) %>% 
+  mutate(rmse = ifelse(rmse > 10, NA, rmse)) %>% 
+  ungroup() %>% 
+  group_by(species) %>% 
+  mutate(max_rmse = max(rmse,na.rm=T))
+filter_dat$delta <- as.numeric(grepl("Delta", filter_dat$model))
+filter_dat$delta <- factor(filter_dat$delta,labels=c("Non-delta","Delta"))
+
+# dat.vast <- filter(filter_dat, Covariate=="Space") %>% mutate(medRatio = NA) %>%
+#                     filter(model %in% c("VAST"))
+dat.spatial.eff <- filter(filter_dat, Covariate=="Space, Effort") %>% mutate(medRatio = NA) %>%
+                    filter(model %in% c("GAM", "RF"))
+dat.ratio <- filter(filter_dat, model=="Ratio") %>% group_by(species) %>% mutate(medRatio = median(rmse,na.rm=T))
+# dat.plot <- rbind(dat.spatial.eff, dat.ratio, dat.vast)
+# dat.plot$model <- factor(dat.plot$model, levels = c("Ratio", "GAM", "VAST", "RF"))
+dat.plot <- rbind(dat.spatial.eff, dat.ratio)
+dat.plot$model <- factor(dat.plot$model, levels = c("Ratio", "GAM", "RF"))
+dat.plot$species <- factor(dat.plot$species, levels = c(sp.labs,"AVERAGE"))
+
+print(dat.plot %>% #group_by(species, model) %>%
+  ggplot(aes(model, rmse, fill = model)) + 
+  # ggplot(aes(model, rmse, fill = model, alpha=delta)) + 
+    # geom_boxplot(outlier.shape = NA) + 
+    geom_violin(draw_quantiles = c(0.5)) +
+    geom_hline(aes(yintercept = medRatio, group = species), linetype = 2) +
+    facet_wrap(~ species) + 
+    theme_sleek() + 
+    xlab("Model") + 
+    ylab("Normalized RMSE") + 
+    theme(axis.text.x = element_text(angle = 90, hjust = 1)) +
+          # strip.text.x = element_text(face=c(rep("plain",15),"bold"))) + 
+    # strip.text.x = element_text(face="bold")) + 
+    coord_cartesian(ylim = c(0,1)) +
+    scale_fill_manual(name="Model",
+                    labels=c("Ratio", "GAM Tweedie", "RF Total"),
+                    values=c("grey","#E69F00","#56B4E9")))
+    # scale_fill_manual(name="Model",
+    #                   labels=c("Ratio", "GAM Tweedie", "VAST", "RF Total"),
+    #                   values=c("grey","#E69F00","#009E73","#56B4E9")))
+
+# # overall stats
+# library(tidyr)
+# dat.plot$model <- as.character(dat.plot$model)
+# tmp <- as.data.frame(dat.plot %>% filter(species=="AVERAGE")) %>% select(model, rmse) %>% 
+#             group_by(model) %>% mutate(id = row_number()) %>% spread(model, rmse) %>% select(-id) %>%
+#             mutate(GAM.Ratio=GAM-Ratio, RF.Ratio=RF-Ratio, VAST.Ratio=VAST-Ratio) %>%
+#             mutate(GAM.Ratio.perc=GAM.Ratio/Ratio, RF.Ratio.perc=RF.Ratio/Ratio, VAST.Ratio.perc=VAST.Ratio/Ratio)
+# round(apply(tmp,2,median,na.rm=T),2)
+
+# Ratio median(RMSE) = 0.22
+# Improvement on ratio estimator (% lower median RMSE):
+#   GAM   4%
+#   VAST 11%
+#   RF   26%
+#   Ens  33%
+  #      Ensemble             GAM           Ratio              RF            VAST 
+  #          0.14            0.21            0.22            0.16            0.18 
+  #     GAM.Ratio        RF.Ratio      VAST.Ratio       Ens.Ratio  GAM.Ratio.perc 
+  #         -0.01           -0.06           -0.02           -0.07           -0.04 
+  # RF.Ratio.perc VAST.Ratio.perc  Ens.Ratio.perc 
+  #         -0.26           -0.11           -0.33
+```
+
+\pagebreak
+
+\begin{landscape}
+```{r model-comparison-byyear-catch, echo=FALSE, message=FALSE, warnings=FALSE, out.width='10in',fig.height=7, fig.width=10, fig.align = "center", fig.cap="Predictive performance of the ratio estimator (status quo) and two spatial modeling frameworks: generalized additive model (GAM) and random forests (RF). We fit each model to 200 'training' datasets simulated with 20\\% observer coverage, then predicted bycatch in unobserved hauls to calculate annual estimates of fleet-wide bycatch. For each species and year, the dashed lines indicate the true observed bycatch."}
+dat = readRDS("figures/results_summary_depthratio.rds")
+dat <- filter(dat, !(model %in% c("RF Cubist","RF Xu2","RF Xu4")))
+dat$model <- as.character(dat$model)
+
+# for now we'll only plot the simulations with 20% coverage
+dat = filter(dat, pct_trips==0.2)
+
+# facet by species. model options are including space, effort, both, neither (color)
+dat$Covariate = paste(dat$spatial, dat$effort)
+dat$Covariate[which(dat$Covariate==" ")] = "Neither"
+dat$Covariate[which(dat$Covariate=="SP EFF")] = "Space, Effort"
+dat$Covariate[which(dat$Covariate=="SP ")] = "Space"
+dat$Covariate[which(dat$Covariate==" EFF")] = "Effort"
+
+filter_dat = dat %>% 
+  group_by(species) %>% 
+  mutate(max_rmse = max(rmse,na.rm=T))
+filter_dat$delta <- as.numeric(grepl("Delta", filter_dat$model))
+filter_dat$delta <- factor(filter_dat$delta,labels=c("Non-delta","Delta"))
+
+dat.spatial.eff <- filter(filter_dat, Covariate=="Space, Effort") %>% 
+  filter(model %in% c("Ratio", "GAM", "RF"))
+dat.ratio <- filter(filter_dat, model=="Ratio")
+dat.plot <- rbind(dat.spatial.eff, dat.ratio)
+dat.plot$model <- factor(dat.plot$model, levels = c("Ratio", "GAM", "RF"))
+
+# gather annual estimates for UNOBSERVED bycatch
+dat.plot <- as.data.frame(tidyr::gather(dat.plot, year, est_unobs, c("est_2011","est_2012","est_2013","est_2014","est_2015")))
+dat.plot$year <- gsub("est_", "", dat.plot$year)
+dat.plot$year <- as.factor(dat.plot$year)
+dat.plot <- dat.plot %>% select(species, model, sim, year, est_unobs)
+
+dat.true <- readRDS("wcgop data/true_bycatch_byyear.rds")
+dat.true <- dplyr::mutate(dat.true, species = fct_recode(species, 
+  "Big skate" = "big skate", "Black skate" = "black skate", 
+  "Brown cat shark" = "brown cat shark", "California slickhead" = "california slickhead",
+  "Dungeness crab" = "dungeness crab", "Grenadier" = "grenadier", 
+  "Octopus" = "octopus unid", "Pacific hake" = "pacific hake",
+  "Pacific halibut" = "pacific halibut", "Rosethorn rockfish" = "rosethorn rockfish",
+  "Slender sole" = "slender sole", "Spiny dogfish shark" = "spiny dogfish shark",
+  "Sandpaper skate" = "sandpaper skate", "Spotted ratfish" = "spotted ratfish",
+  "Tanner crab" = "tanneri tanner crab"))
+# for some reason rosethorn rockfish and sandpaper skate got mixed up in dat.true
+dat.true$species <- as.character(dat.true$species)
+dat.plot$species <- as.character(dat.plot$species)
+sp.labs <- names(table(dat.plot$species))
+dat.true$species <- factor(dat.true$species, levels=sp.labs)
+dat.plot$species <- factor(dat.plot$species, levels=sp.labs)
+
+# add true_obs and true_full to dat.plot (same for all models)
+dat.plot <- dat.plot[with(dat.plot, order(model, species, year, sim)), ]
+dat.true <- dat.true[with(dat.true, order(species, year, sim)), ] 
+dat.plot$true_obs = NA
+dat.plot$true_full = NA
+dat.plot[dat.plot$model=="Ratio", c("true_obs","true_full")] <- dat.true[, c("true_obs","true_full")]
+dat.plot[dat.plot$model=="RF", c("true_obs","true_full")] <- dat.true[, c("true_obs","true_full")]
+dat.plot[dat.plot$model=="GAM", c("true_obs","true_full")] <- dat.true[, c("true_obs","true_full")]
+dat.plot$est_full <- dat.plot$true_obs + dat.plot$est_unobs
+dat.plot <- as.data.frame(dat.plot %>% group_by(species) %>% mutate(max_catch=max(true_full)) %>% 
+            ungroup() %>% mutate(est_full_max=est_full/max_catch, true_full_max=true_full/max_catch))
+
+print(dat.plot %>% 
+  ggplot(aes(x=year, y=est_full_max, fill = model)) + 
+    geom_boxplot(outlier.shape = NA) + 
+    geom_errorbar(aes(ymax=true_full_max, ymin=true_full_max, group=interaction(species,year)), linetype=2) +
+    facet_wrap(~ species) + 
+    theme_sleek() + 
+    xlab("Year") + 
+    ylab("Relative bycatch (% of max by species)") + 
+    coord_cartesian(ylim = c(0,1.2)) +
+    scale_fill_manual(name="Model", labels=c("Ratio", "GAM Tweedie", "RF Total"), values=c("grey","#E69F00","#56B4E9")))
+```
+\end{landscape}
+
+\pagebreak
+
+```{r model-comparison-byyear, echo=FALSE, message=FALSE, warnings=FALSE, out.width='6in',fig.height=4, fig.width=6, fig.align = "center", fig.cap="Percent error of annual bycatch predictions using the ratio estimator (status quo) and random forests (RF), averaged across 15 species in the West Coast groundfish trawl fishery. Averaged across species, RF-Total was more precise than the ratio estimator (median absolute percent error: RF = 0.118, Ratio = 0.155), but with slight positive bias (median percent error = 0.068). Median percent error (bias) of the ratio estimator was very slightly negative (-0.011). We fit each model to 200 'training' datasets simulated with 20\\% observer coverage, then predicted bycatch in unobserved hauls to calculate annual estimates of fleet-wide bycatch for each species. Percent error was calculated using the true, observed bycatch."}
+# created by /figures/summarize_results.R
+# dat = readRDS("figures/results_summary.rds")
+dat = readRDS("figures/results_summary_depthratio.rds") 
+dat <- filter(dat, !(model %in% c("RF Cubist","RF Xu2","RF Xu4")))
+dat$model <- as.character(dat$model)
+
+# for now we'll only plot the simulations with 20% coverage
+dat = filter(dat, pct_trips==0.2)
+
+# facet by species. model options are including space, effort, both, neither (color)
+dat$Covariate = paste(dat$spatial, dat$effort)
+dat$Covariate[which(dat$Covariate==" ")] = "Neither"
+dat$Covariate[which(dat$Covariate=="SP EFF")] = "Space, Effort"
+dat$Covariate[which(dat$Covariate=="SP ")] = "Space"
+dat$Covariate[which(dat$Covariate==" EFF")] = "Effort"
+
+# Get ratio, VAST, RF results
+dat$species <- as.character(dat$species)
+dat.vast <- filter(dat, Covariate=="Space") %>% filter(model %in% c("VAST"))
+dat.spatial.eff <- filter(dat, Covariate=="Space, Effort") %>% filter(model %in% c("RF"))
+dat.ratio <- filter(dat, model=="Ratio")
+
+# Create ensemble = mean(VAST,RF)
+dat.ensemble <- dat.spatial.eff
+err_cols <- c("e_2011","e_2012","e_2013","e_2014","e_2015","pe_2011","pe_2012","pe_2013","pe_2014","pe_2015")
+temp_array <- abind::abind(dat.vast[, err_cols], dat.spatial.eff[, err_cols], along=3)
+dat.ensemble[, err_cols] <- apply(temp_array, 1:2, mean, na.rm=T)
+dat.ensemble$model = "Ensemble"
+
+# dat.plot <- rbind(dat.ratio, dat.vast, dat.spatial.eff, dat.ensemble)
+# dat.plot$model <- factor(dat.plot$model, levels = c("Ratio", "VAST", "RF","Ensemble"))
+dat.plot <- rbind(dat.ratio, dat.spatial.eff)
+dat.plot$model <- factor(dat.plot$model, levels = c("Ratio","RF"))
+dat.plot$species = "AVERAGE"
+
+# filter_dat = dat %>% 
+filter_dat = dat.all %>% 
+  # group_by(species, model, Covariate) %>% 
+  # mutate(rmse = ifelse(rmse > 10, NA, rmse)) %>% 
+  # ungroup() %>% 
+  group_by(species) %>% 
+  mutate(max_rmse = max(rmse,na.rm=T))
+filter_dat$delta <- as.numeric(grepl("Delta", filter_dat$model))
+filter_dat$delta <- factor(filter_dat$delta,labels=c("Non-delta","Delta"))
+
+dat.spatial.eff <- filter(filter_dat, Covariate=="Space, Effort") %>% mutate(medRatio = NA) %>%
+                    filter(model %in% c("Ratio", "RF"))
+dat.ratio <- filter(filter_dat, model=="Ratio") %>% group_by(species) %>% mutate(medRatio = median(rmse))
+dat.plot <- rbind(dat.spatial.eff, dat.ratio)
+dat.plot$model <- factor(dat.plot$model, levels = c("Ratio", "RF"))
+dat.plot$species <- factor(dat.plot$species, levels = c(sp.labs,"AVERAGE"))
+
+# gather annual estimates
+dat.plot <- as.data.frame(tidyr::gather(dat.plot, year, pe, c("pe_2011","pe_2012","pe_2013","pe_2014","pe_2015")))
+dat.plot$year <- gsub("pe_", "", dat.plot$year)
+dat.plot$year <- as.factor(dat.plot$year)
+
+# pdf("figures/fig6_model_comparison_byyear/fig6_model_comparison_byyear_averagesp_ensemble.pdf", width=7, height=4)
+print(dat.plot %>% #group_by(species, model) %>%
+  ggplot(aes(x=year, y=pe, fill = model)) + 
+    geom_violin(draw_quantiles = c(0.5)) +
+    geom_hline(yintercept = 0, linetype = 2) +
+    theme_sleek() + 
+    xlab("Year") + 
+    ylab("Percent Error") + 
+    coord_cartesian(ylim = c(-0.75, 0.75)) +
+    scale_fill_manual(name="Model", labels=c("Ratio", "RF Total"),
+                    values=c("grey","#56B4E9")))
+    # scale_fill_manual(name="Model", labels=c("Ratio", "VAST","RF Total","Ensemble"),
+    #                 values=c("grey","#009E73","#56B4E9","white")))
+
+# summarize bias
+# dat.plot %>% group_by(model) %>% summarize(median.pe=median(pe,na.rm=T), median.abs.pe=median(abs(pe),na.rm=T))
+
+#   model    median.pe median.abs.pe
+# 1 Ratio     -0.002        0.155
+# 2 VAST      -0.113        0.141
+# 3 RF         0.068        0.118
+# 4 Ensemble  -0.013        0.104
+```
+
+\pagebreak
+
+```{r model-comparison-delta, echo=FALSE, message=FALSE, warnings=FALSE, out.width='7in',fig.height=6, fig.width=7, fig.align = "center", fig.cap="Predictive performance of the ratio estimator (status quo) and two spatial modeling frameworks: generalized additive model (GAM) and random forests (RF). We fit each model to 200 'training' datasets simulated with 20\\% observer coverage, then predicted bycatch in unobserved hauls to calculate annual estimates of fleet-wide bycatch. For each species, the dashed line indicates the median RMSE for the ratio estimator, and solid lines indicate median RMSE for each model. For both GAMs and RFs, the non-delta models outperformed the delta models."}
+dat = readRDS("figures/results_summary_depthratio.rds")
+dat <- filter(dat, !(model %in% c("RF Cubist","RF Xu2","RF Xu4")))
+dat$model <- as.character(dat$model)
+
+# for now we'll only plot the simulations with 20% coverage
+dat = filter(dat, pct_trips==0.2)
+
+# facet by species. model options are including space, effort, both, neither (color)
+dat$Covariate = paste(dat$spatial, dat$effort)
+dat$Covariate[which(dat$Covariate==" ")] = "Neither"
+dat$Covariate[which(dat$Covariate=="SP EFF")] = "Space, Effort"
+dat$Covariate[which(dat$Covariate=="SP ")] = "Space"
+dat$Covariate[which(dat$Covariate==" EFF")] = "Effort"
+
+filter_dat = group_by(dat, species, model, Covariate) %>% 
+  mutate(rmse = ifelse(rmse > 10, NA, rmse)) %>% 
+  ungroup() %>% 
+  group_by(species) %>% 
+  mutate(max_rmse = max(rmse,na.rm=T))
+filter_dat$delta <- as.numeric(grepl("Delta", filter_dat$model))
+filter_dat$delta <- factor(filter_dat$delta,labels=c("Non-delta","Delta"))
+
+dat.spatial.eff <- filter(filter_dat, Covariate=="Space, Effort") %>% mutate(medRatio = NA) %>%
+                    filter(model %in% c("Ratio", "GAM Delta", "GAM", "RF Delta", "RF", "RF Best"))
+dat.ratio <- filter(filter_dat, model=="Ratio") %>% group_by(species) %>% mutate(medRatio = median(rmse))
+dat.plot <- rbind(dat.spatial.eff, dat.ratio)
+dat.plot$model <- factor(dat.plot$model, levels = c("Ratio", "GAM Delta", "GAM", "RF Delta", "RF", "RF Best"))
+levels(dat.plot$model) <- c("Ratio", "GAM Delta", "GAM Tweedie", "RF Delta", "RF Total", "RF All")
+
+print(dat.plot %>% 
+  ggplot(aes(model, rmse, fill = model)) + 
+  	geom_violin(draw_quantiles = c(0.5)) +
+  	geom_hline(aes(yintercept = medRatio, group = species), linetype = 2) +
+  	facet_wrap(~ species) + 
+  	theme_sleek() + 
+  	xlab("Model") + 
+  	ylab("Normalized RMSE") + 
+  	theme(axis.text.x = element_text(angle = 90, hjust = 1)) + 
+  	coord_cartesian(ylim = c(0,1)) +
+	scale_fill_manual(name="Model",
+	                  values=c("grey","#E69F0080","#E69F00","#56B4E980","#56B4E9", rgb(t(col2rgb("#56B4E9")/1.4), maxColorValue=255))))
+```
+
+\pagebreak
+
+```{r covariate-effects, echo=FALSE, message=FALSE, warnings=FALSE, out.width='7in',fig.height=6, fig.width=7, fig.align = "center", fig.cap="Change in predictive performance (normalized RMSE) when adding fishing effort and spatial location as covariates in each model. For many species, adding space to the GAM-Delta and GAM-Tweedie models led to worse predictions (positive change in RMSE, above dashed line). On the other hand, adding space to the RF-Delta model consistently improved predictions (negative change in RMSE, below dashed line). For RF-Total, including space had either slightly improved predictions or had no effect. Adding effort had little effect for nearly all species and models, and never had a larger effect than adding space."}
+dat = readRDS("figures/results_summary_depthratio.rds")
+dat <- filter(dat, !(model %in% c("RF Cubist","RF Xu2","RF Xu4")))
+dat$model <- as.character(dat$model)
+
+dat$Covariate = paste(dat$spatial, dat$effort)
+dat$Covariate[which(dat$Covariate==" ")] = "Neither"
+dat$Covariate[which(dat$Covariate=="SP EFF")] = "Space + Effort"
+dat$Covariate[which(dat$Covariate=="SP ")] = "Space"
+dat$Covariate[which(dat$Covariate==" EFF")] = "Effort"
+
+dat = group_by(dat, model, sim, pct_trips, species) %>% 
+  mutate(null_rmse = ifelse(length(rmse[which(spatial=="" & effort == "")]) > 0, 
+    rmse[which(spatial=="" & effort == "")], NA)) %>% 
+  mutate(diff_rmse = rmse - null_rmse) 
+
+# filter out the null model -- not used in comparison
+dat = filter(dat, pct_trips == 0.2) %>% 
+  filter(diff_rmse != 0 & !is.na(diff_rmse) ) 
+
+# levels(dat$model) <- c("GAM Delta", "GAM Tweedie", "Ratio", "RF All", "RF Delta", "RF Total", "VAST")
+
+group_by(dat, species, model, Covariate) %>%
+  ggplot(aes(model, diff_rmse, fill = Covariate, group = factor(paste0(model, Covariate)))) +
+  facet_wrap(~ species) + 
+  geom_boxplot(outlier.shape = NA) +
+  theme_sleek() + 
+  xlab("Model") + 
+  ylab("Difference in normalized RMSE") + 
+  theme(axis.text.x = element_text(angle = 90, hjust = 1)) + 
+  coord_cartesian(ylim = c(-0.5,0.5)) +
+  scale_fill_brewer(name="Covariates added", type="qual", palette = 1) +
+  geom_hline(yintercept=0, linetype=2, alpha=0.3)
+```
+
+\pagebreak
+
+```{r coverage-effects, echo=FALSE, message=FALSE, warnings=FALSE, out.width='7in',fig.height=6, fig.width=7, fig.align = "center", fig.cap="Predictive performance (normalized RMSE) for different levels of simulated observer coverage. Averaged across species, RF-Total had lower median RMSE than the ratio estimator, even at half the observer coverage (RF-Total at 20\\%: 0.155, Ratio at 40\\%: 0.180). GAM-Tweedie failed to converge for 3/15 species."}
+dat = readRDS("figures/results_summary_depthratio.rds") # created by /figures/summarize_results.R
+dat <- filter(dat, !(model %in% c("RF Cubist","RF Xu2","RF Xu4")))
+dat$model <- as.character(dat$model)
+
+# facet by species. model options are including space, effort, both, neither (color)
+dat$Covariate = paste(dat$spatial, dat$effort)
+dat$Covariate[which(dat$Covariate==" ")] = "Neither"
+dat$Covariate[which(dat$Covariate=="SP EFF")] = "Space, Effort"
+dat$Covariate[which(dat$Covariate=="SP ")] = "Space"
+dat$Covariate[which(dat$Covariate==" EFF")] = "Effort"
+
+# add "AVERAGE" as a 'species' to put in bottom right panel
+sp.labs <- levels(dat$species)
+dat$species <- as.character(dat$species)
+dat <- dat %>% filter(model %in% c("Ratio", "GAM", "RF"))
+dat.allspecies <- dat %>% filter(model %in% c("Ratio", "RF"))
+dat.allspecies$species = "AVERAGE"
+dat.all <- rbind(dat, dat.allspecies)
+dat.all$species <- factor(dat.all$species, levels = c(sp.labs,"AVERAGE"))
+
+dat.spatial.eff <- filter(dat.all, Covariate=="Space, Effort")
+dat.ratio <- filter(dat.all, model=="Ratio")
+dat.plot <- rbind(dat.spatial.eff, dat.ratio)
+dat.plot$model <- factor(dat.plot$model, levels = c("Ratio", "GAM", "RF"))
+levels(dat.plot$model) <- c("Ratio","GAM Tweedie","RF Total")
+
+print(dat.plot %>%
+  ggplot(aes(model, rmse, fill = as.factor(pct_trips))) + 
+  	geom_violin(draw_quantiles = c(0.5)) +
+  	facet_wrap(~ species) + 
+  	theme_sleek() + 
+  	xlab("Model") + 
+  	ylab("Normalized RMSE") + 
+  	theme(axis.text.x = element_text(angle = 90, hjust = 1)) + 
+  	coord_cartesian(ylim = c(0,1)) +
+	  scale_fill_manual(name="Percent Observed", values=c("deepskyblue2","deepskyblue4")))
+```
+
+\pagebreak
+
+<!-- uses raw data so code not included here -->
+```{r bycatch-rate-rmse, echo=FALSE, message=FALSE, warnings=FALSE, out.width="6in", fig.align = "center", fig.cap="RF reduction in prediction error compared to the ratio estimator, as a function of bycatch rate for 15 species in the U.S. West Coast groundfish trawl fishery. RF improved on the ratio estimator for all species (26\\% lower RMSE on average), but this improvement was greater for species with lower bycatch rates (e.g. Rosethorn rockfish, California slickhead, Big skate, Black skate, Dungeness crab, Grenadier)."}
+fig_path <- "../figures/supplement/fig10_bycatch_rate_rmse.png"
+knitr::include_graphics(fig_path)
+```
+
+\pagebreak
+
+<!-- uses raw data so code not included here -->
+```{r variance-bias, echo=FALSE, message=FALSE, warnings=FALSE, out.width="6in", fig.align = "center", fig.cap="Bias-variance trade-off between the ratio estimator and RF. RF achieves more accurate predictions (lower RMSE) by allowing some bias but greatly reducing the variance of its estimates. The ratio estimator has very low bias but much higher variance (i.e. it underfits the data and is more sensitive to which hauls are observed). Dashed grey lines indicate iso-RMSE curves. Species with lines that are nearly parallel to the iso-RMSE curves (e.g. Octopus, Brown cat shark) indicate that RF and the ratio estimator perform similarly (same RMSE). Species with lines that cross iso-RMSE curves (e.g. Dungeness crab, California slickhead, Spiny dogfish shark) indicate RF greatly improves on the ratio estimator (lower RMSE). RF has lower RMSE for species with lower bycatch rates (Fig. 11)."}
+fig_path <- "../figures/supplement/fig7_tradeoffs_v2.png"
+knitr::include_graphics(fig_path)
+```
+
+\pagebreak
+
+```{r rf-cubist, echo=FALSE, message=FALSE, warnings=FALSE, out.width="6in", fig.align = "center", fig.cap="Performance of RF bias correction methods (percent error, PE, averaged across years 2011-2015). The ratio estimator is unbiased (median PE = 0.002). RF is positively biased (median PE = 0.055) and Cubist is less positively biased (median PE = 0.043). Cubist reduces bias by fitting a linear model in regression tree terminal nodes instead of using the data mean (Quinlan 1992, Quinlan 1993). The second method, Xu (2013), fits a second RF model to the residuals of the original RF, but this method performed poorly (median PE = 1.107, off chart)."}
+dat = readRDS("figures/results_summary_depthratio.rds")
+
+# facet by species. model options are including space, effort, both, neither (color)
+dat$Covariate = paste(dat$spatial, dat$effort)
+dat$Covariate[which(dat$Covariate==" ")] = "Neither"
+dat$Covariate[which(dat$Covariate=="SP EFF")] = "Space, Effort"
+dat$Covariate[which(dat$Covariate=="SP ")] = "Space"
+dat$Covariate[which(dat$Covariate==" EFF")] = "Effort"
+
+dat = filter(dat, pct_trips==0.2) %>% filter(species=="Dungeness crab")
+
+dat.spatial.eff <- dat %>% group_by(species) %>% mutate(medRatio = NA) %>% 
+                    filter(model %in% c("RF", "RF Cubist", "RF Xu2")) %>% filter(Covariate=="Space, Effort")
+dat.ratio <- dat %>% filter(model=="Ratio") %>% group_by(species) %>% mutate(medRatio = median(rmse))
+dat.plot <- rbind(dat.spatial.eff, dat.ratio)
+dat.plot$model <- factor(dat.plot$model, levels = c("Ratio", "RF", "RF Cubist", "RF Xu2"))
+levels(dat.plot$model) <- c("Ratio", "RF", "RF Cubist", "RF Xu")
+
+# gather annual estimates
+dat.plot <- as.data.frame(tidyr::gather(dat.plot, year, pe, c("pe_2011","pe_2012","pe_2013","pe_2014","pe_2015")))
+dat.plot$year <- gsub("pe_", "", dat.plot$year)
+dat.plot$year <- as.factor(dat.plot$year)
+
+print(dat.plot %>% #group_by(species, model) %>%
+  ggplot(aes(x=model, y=pe, fill = model)) + 
+    geom_violin(draw_quantiles = c(0.5)) +
+    geom_hline(aes(group = species), yintercept = 0, linetype = 2) +
+    facet_wrap(~ species) + 
+    theme_sleek() + 
+    xlab("Model") + 
+    ylab("Percent Error") + 
+    coord_cartesian(ylim = c(-0.5,0.5)) +
+  scale_fill_manual(name="Model", values=c("grey","#56B4E9",
+                                           rgb(t(col2rgb("#56B4E9")/1.4), maxColorValue=255),
+                                           rgb(t(col2rgb("#56B4E9")/2), maxColorValue=255))))
+```
+
