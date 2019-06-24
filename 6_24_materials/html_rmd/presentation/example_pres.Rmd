@@ -1,0 +1,179 @@
+---
+title: "Xaringan Presentations"
+subtitle: "With Rmarkdown"
+author: "Sean Hardison"
+output:
+  xaringan::moon_reader:
+    css: ["default","libs/EDAB_theme.css"]
+    lib_dir: libs
+    nature:
+      titleSlideClass: ["right", "middle", "my-title"]
+      highlightStyle: githubp
+      highlightLines: true
+      countIncrementalSlides: false
+  revealjs::revealjs_presentation:
+    self_contained: false
+    reveal_plugins: ["notes", "search"]
+---
+
+.medium[
+.remark-inline-code[
+```{r setup, include=TRUE, message=F, warning=F, echo = T}
+
+# Use the `opts_chunk` function to set global parameters for code chunks. # 
+# For instance, the following code results in all code chunks being printed 
+# into the rendered document along with output. If we wanted to ignore 
+# warning messages from code chunks, we could set `warning = FALSE`
+
+knitr::opts_chunk$set(echo = TRUE, warning = FALSE, fig.align = 'center')
+
+# load libraries
+library(tidyverse)
+library(plotly)
+library(lubridate)
+library(kableExtra)
+library(DT)
+library(xaringan)
+
+
+# I prefer to load data and source scripts in the setup chunk. To do this,
+# I make use of the `here` package in the following way:
+
+#1. Identify the file path where data is stored. 
+# Using here() defaults the base directory to wherever your open .Rproj file is located. 
+# This means that any of us could download this repository and automatically be able to run this code
+# without use of `setwd()`.
+data.dir <- here::here("html_rmd","data")
+
+#2. Load data
+load(file.path(data.dir, "LME_nutrients_spatial.rdata"))
+
+```
+]
+]
+---
+
+## Process data
+
+If I can avoid it, I prefer to separate code chunks for processing and plotting. 
+
+.medium[
+.remark-inline-code[
+```{r data-processing}
+
+#Process and summarise data
+EcoMon_sum <- LME_nutrients_spatial %>% 
+  filter(Value != -999, EPU %in% c("GB","GOM","SS")) %>% 
+  
+#Create sample depth bins
+  mutate(Value = as.numeric(Value),
+         Depth_station = as.numeric(Depth_station),
+         Depth_sampling = as.numeric(Depth_sampling)) %>% 
+  mutate(bot_dif = Depth_station-Depth_sampling) %>% 
+  mutate(surf_bot = ifelse(bot_dif <= 10, "Bottom",
+                           ifelse(bot_dif > 10 & Depth_sampling <= 5, "Surface", "mid-water"))) %>%
+  
+#Create seasonal bins
+  filter(month(Time) %in% c(10,11,5,6)) %>% 
+  mutate(season = ifelse(month(Time) == 11 | month(Time) == 10, "Fall","Spring")) %>% 
+  
+#Summarise
+  group_by(EPU,
+           season,
+           surf_bot,
+           Var,
+           Year = year(Time)) %>% 
+  dplyr::summarise(Value = mean(Value, na.rm = T)) %>% 
+  as.data.frame()
+
+```
+]
+]
+---
+
+## Plot data
+
+Embedded plots can be tricky if they're large. 
+
+```{r ecomon_data, fig.cap="Summarized nutrient and oceanographic data from the NEFSC EcoMon surveys in New Enlgand Ecological Production Units (EPUs).", out.width="90%",fig.height=8, fig.align='center', echo = F, out.width="80%"}
+EcoMon_sum %>% 
+  filter(!Var %in% c("BTLNBR","CASTNO","Cruise_ID","EXPOCODE","STNNBR")) %>% 
+  ggplot() +
+  geom_line(aes(x = Year, y = Value, color = surf_bot)) +
+  guides(color = guide_legend("Sampling\n depth")) +
+  facet_grid(Var~EPU + season, scales = "free") +
+  theme_bw() +
+  theme(axis.text.x = element_text(angle = 45, hjust = 1),
+        strip.text.y = element_text(size = 6)) 
+```
+
+---
+
+## Tables
+
+Tables can also be embedded and interacted with.
+
+```{r, echo = F}
+vars <- data.frame(Variable = c("Cruise identifier","Cruise identifier","Station number",
+                                "CTD cast number","Sample bottle number","Sample date",
+                                "Sample time","Latitude","Longitude","Depth of station",
+                                "Depth of sample","Water pressure","Water temperature",
+                                "Water salinity","Potential density at surface pressure",
+                                "Dissolved oxygen","Silicic acid concentration",
+                                "Total nitrate and nitrite concentration","Ammonia concentration",
+                                "Phosphate concentration","Dissolved oxygen"),
+                   Names = c("EXPOCODE","Cruise_ID","STNNBR","CASTNO",
+                             "BTLNBR","Date_UTC","Time_UTC",
+                             "Latitude","Longitude","Depth_station",
+                             "Depth_sampling","CTDPRS","CTDTEMP",
+                             "CTDSAL","Sigma.Theta","CTDOXY",
+                             "SILCAT","NITRIT+NITRAT","AMMMONIA",
+                             "PHSPHT","CTDOXYMOL"),
+                   Units = c("","","",
+                             "","","MM/DD/YYYY",
+                             "hh:mm","decimal degrees","decimal degrees",
+                             "m","m","decibars","°C",
+                             "PSS-78","kg m^-3^","mg L^-1^",
+                             "$\\mu$M","$\\mu$M","$\\mu$M",
+                             "$\\mu$M","$\\mu$mol kg^-1^"))
+knitr::kable(vars,caption = "Variable definitions for the LME_nutrients_spatial.rdata file.")%>%
+  kable_styling(bootstrap_options = "striped", full_width = F, position = "center") %>%
+  column_spec(2, width = "5cm") %>% 
+  scroll_box(height = "400px")
+```
+
+---
+
+## HTML Widgets
+
+[HTML widgets](https://www.htmlwidgets.org/) can easily be brought into the presentation.
+
+```{r, echo = F, fig.align = 'right'}
+library(plotly)
+# volcano is a numeric matrix that ships with R
+p <- plot_ly(z = ~volcano) %>% add_surface()
+p
+```
+
+---
+
+## Sourcing gifs is easy
+
+![madcat](https://media.giphy.com/media/OIxSgdOxLYBTG/giphy.gif)
+
+
+---
+
+## Local images too!
+
+.medium[
+.remark-inline-code[
+```{r, out.width="60%", echo = T, eval = F}
+knitr::include_graphics("pres_images/noaa-background.png")
+```
+]
+]
+
+```{r, out.width="60%", echo = F, eval = T}
+knitr::include_graphics("pres_images/noaa-background.png")
+```
