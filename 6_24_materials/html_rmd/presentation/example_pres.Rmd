@@ -95,7 +95,7 @@ EcoMon_sum <- LME_nutrients_spatial %>%
 
 Embedded plots can be tricky if they're large. 
 
-```{r ecomon_data, fig.cap="Summarized nutrient and oceanographic data from the NEFSC EcoMon surveys in New Enlgand Ecological Production Units (EPUs).", out.width="90%",fig.height=8, fig.align='center', echo = F, out.width="80%"}
+```{r ecomon_data, fig.cap="Summarized nutrient and oceanographic data from the NEFSC EcoMon surveys in New Enlgand Ecological Production Units (EPUs).", out.width="90%", fig.align='center', echo = F}
 EcoMon_sum %>% 
   filter(!Var %in% c("BTLNBR","CASTNO","Cruise_ID","EXPOCODE","STNNBR")) %>% 
   ggplot() +

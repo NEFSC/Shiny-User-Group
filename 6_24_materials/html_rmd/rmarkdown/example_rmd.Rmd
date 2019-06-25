@@ -31,7 +31,6 @@ data.dir <- here::here("html_rmd","data")
 
 #2. Load data
 load(file.path(data.dir, "LME_nutrients_spatial.rdata"))
-
 ```
 
 ## Process data
@@ -157,7 +156,7 @@ datatable(vars)
 
 
 
-## Tabbed output {.tabset .tabset-fade .tabset-pills}
+## Tabbed output {.tabset}
 
 Tabbed outputs can be added to save vertical space
 

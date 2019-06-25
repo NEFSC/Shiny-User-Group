@@ -1,0 +1,564 @@
+<!DOCTYPE html>
+<html >
+
+<head>
+
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <title>Example Rmarkdown</title>
+  <meta name="description" content="Example Rmarkdown">
+  <meta name="generator" content="bookdown  and GitBook 2.6.7">
+
+  <meta property="og:title" content="Example Rmarkdown" />
+  <meta property="og:type" content="book" />
+  
+  
+  
+  
+
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:title" content="Example Rmarkdown" />
+  
+  
+  
+
+
+
+
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black">
+  
+  
+
+
+<script src="book_assets/jquery-2.2.3/jquery.min.js"></script>
+<link href="book_assets/gitbook-2.6.7/css/style.css" rel="stylesheet" />
+<link href="book_assets/gitbook-2.6.7/css/plugin-table.css" rel="stylesheet" />
+<link href="book_assets/gitbook-2.6.7/css/plugin-bookdown.css" rel="stylesheet" />
+<link href="book_assets/gitbook-2.6.7/css/plugin-highlight.css" rel="stylesheet" />
+<link href="book_assets/gitbook-2.6.7/css/plugin-search.css" rel="stylesheet" />
+<link href="book_assets/gitbook-2.6.7/css/plugin-fontsettings.css" rel="stylesheet" />
+
+
+
+
+
+
+
+<script src="book_assets/kePrint-0.0.1/kePrint.js"></script>
+<script src="book_assets/htmlwidgets-1.3/htmlwidgets.js"></script>
+<script src="book_assets/plotly-binding-4.9.0/plotly.js"></script>
+<script src="book_assets/typedarray-0.1/typedarray.min.js"></script>
+<link href="book_assets/crosstalk-1.0.0/css/crosstalk.css" rel="stylesheet" />
+<script src="book_assets/crosstalk-1.0.0/js/crosstalk.min.js"></script>
+<link href="book_assets/plotly-htmlwidgets-css-1.46.1/plotly-htmlwidgets.css" rel="stylesheet" />
+<script src="book_assets/plotly-main-1.46.1/plotly-latest.min.js"></script>
+<link href="book_assets/datatables-css-0.0.0/datatables-crosstalk.css" rel="stylesheet" />
+<script src="book_assets/datatables-binding-0.6/datatables.js"></script>
+<link href="book_assets/dt-core-1.10.16/css/jquery.dataTables.min.css" rel="stylesheet" />
+<link href="book_assets/dt-core-1.10.16/css/jquery.dataTables.extra.css" rel="stylesheet" />
+<script src="book_assets/dt-core-1.10.16/js/jquery.dataTables.min.js"></script>
+
+
+<style type="text/css">
+div.sourceCode { overflow-x: auto; }
+table.sourceCode, tr.sourceCode, td.lineNumbers, td.sourceCode {
+  margin: 0; padding: 0; vertical-align: baseline; border: none; }
+table.sourceCode { width: 100%; line-height: 100%; }
+td.lineNumbers { text-align: right; padding-right: 4px; padding-left: 4px; color: #aaaaaa; border-right: 1px solid #aaaaaa; }
+td.sourceCode { padding-left: 5px; }
+code > span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code > span.dt { color: #902000; } /* DataType */
+code > span.dv { color: #40a070; } /* DecVal */
+code > span.bn { color: #40a070; } /* BaseN */
+code > span.fl { color: #40a070; } /* Float */
+code > span.ch { color: #4070a0; } /* Char */
+code > span.st { color: #4070a0; } /* String */
+code > span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code > span.ot { color: #007020; } /* Other */
+code > span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code > span.fu { color: #06287e; } /* Function */
+code > span.er { color: #ff0000; font-weight: bold; } /* Error */
+code > span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+code > span.cn { color: #880000; } /* Constant */
+code > span.sc { color: #4070a0; } /* SpecialChar */
+code > span.vs { color: #4070a0; } /* VerbatimString */
+code > span.ss { color: #bb6688; } /* SpecialString */
+code > span.im { } /* Import */
+code > span.va { color: #19177c; } /* Variable */
+code > span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code > span.op { color: #666666; } /* Operator */
+code > span.bu { } /* BuiltIn */
+code > span.ex { } /* Extension */
+code > span.pp { color: #bc7a00; } /* Preprocessor */
+code > span.at { color: #7d9029; } /* Attribute */
+code > span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code > span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code > span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+</style>
+
+</head>
+
+<body>
+
+
+
+  <div class="book without-animation with-summary font-size-2 font-family-1" data-basepath=".">
+
+    <div class="book-summary">
+      <nav role="navigation">
+
+<ul class="summary">
+<li class="chapter" data-level="0.1" data-path=""><a href="#process-data"><i class="fa fa-check"></i><b>0.1</b> Process data</a></li>
+<li class="chapter" data-level="0.2" data-path=""><a href="#plot-data"><i class="fa fa-check"></i><b>0.2</b> Plot data</a></li>
+<li class="chapter" data-level="0.3" data-path=""><a href="#tables"><i class="fa fa-check"></i><b>0.3</b> Tables</a></li>
+<li class="chapter" data-level="0.4" data-path=""><a href="#html-widgets"><i class="fa fa-check"></i><b>0.4</b> HTML Widgets</a><ul>
+<li class="chapter" data-level="0.4.1" data-path=""><a href="#plotly"><i class="fa fa-check"></i><b>0.4.1</b> Plotly</a></li>
+<li class="chapter" data-level="0.4.2" data-path=""><a href="#plotlyggplotly"><i class="fa fa-check"></i><b>0.4.2</b> plotly::ggplotly()</a></li>
+<li class="chapter" data-level="0.4.3" data-path=""><a href="#dt"><i class="fa fa-check"></i><b>0.4.3</b> DT</a></li>
+</ul></li>
+<li class="chapter" data-level="0.5" data-path=""><a href="#tabbed-output"><i class="fa fa-check"></i><b>0.5</b> Tabbed output</a><ul>
+<li class="chapter" data-level="0.5.1" data-path=""><a href="#the-code"><i class="fa fa-check"></i><b>0.5.1</b> The Code</a></li>
+<li class="chapter" data-level="0.5.2" data-path=""><a href="#the-figure"><i class="fa fa-check"></i><b>0.5.2</b> The Figure</a></li>
+</ul></li>
+<li class="divider"></li>
+<li><a href="https://bookdown.org" target="_blank">Published with bookdown</a></li>
+</ul>
+
+      </nav>
+    </div>
+
+    <div class="book-body">
+      <div class="body-inner">
+        <div class="book-header" role="navigation">
+          <h1>
+            <i class="fa fa-circle-o-notch fa-spin"></i><a href="./">Example Rmarkdown</a>
+          </h1>
+        </div>
+
+        <div class="page-wrapper" tabindex="-1" role="main">
+          <div class="page-inner">
+
+            <section class="normal" id="section-">
+<div id="header">
+<h1 class="title">Example Rmarkdown</h1>
+</div>
+<div id="process-data" class="section level2">
+<h2><span class="header-section-number">0.1</span> Process data</h2>
+<p>If I can avoid it, I prefer to separate code chunks for processing and plotting.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co">#Process and summarise data-----------------------------------------------------------------</span>
+EcoMon_sum &lt;-<span class="st"> </span>LME_nutrients_spatial <span class="op">%&gt;%</span><span class="st"> </span>
+<span class="st">  </span><span class="kw">filter</span>(Value <span class="op">!=</span><span class="st"> </span><span class="op">-</span><span class="dv">999</span>, EPU <span class="op">%in%</span><span class="st"> </span><span class="kw">c</span>(<span class="st">&quot;GB&quot;</span>,<span class="st">&quot;GOM&quot;</span>,<span class="st">&quot;SS&quot;</span>)) <span class="op">%&gt;%</span><span class="st"> </span>
+<span class="st">  </span>
+<span class="st">  </span><span class="co">#Create sample depth bins---------------------------------------------------------------------</span>
+<span class="st">  </span><span class="kw">mutate</span>(<span class="dt">Value =</span> <span class="kw">as.numeric</span>(Value),
+         <span class="dt">Depth_station =</span> <span class="kw">as.numeric</span>(Depth_station),
+         <span class="dt">Depth_sampling =</span> <span class="kw">as.numeric</span>(Depth_sampling)) <span class="op">%&gt;%</span><span class="st"> </span>
+<span class="st">  </span><span class="kw">mutate</span>(<span class="dt">bot_dif =</span> Depth_station<span class="op">-</span>Depth_sampling) <span class="op">%&gt;%</span><span class="st"> </span>
+<span class="st">  </span><span class="kw">mutate</span>(<span class="dt">surf_bot =</span> <span class="kw">ifelse</span>(bot_dif <span class="op">&lt;=</span><span class="st"> </span><span class="dv">10</span>, <span class="st">&quot;Bottom&quot;</span>,
+                           <span class="kw">ifelse</span>(bot_dif <span class="op">&gt;</span><span class="st"> </span><span class="dv">10</span> <span class="op">&amp;</span><span class="st"> </span>Depth_sampling <span class="op">&lt;=</span><span class="st"> </span><span class="dv">5</span>, <span class="st">&quot;Surface&quot;</span>, <span class="st">&quot;mid-water&quot;</span>))) <span class="op">%&gt;%</span>
+<span class="st">  </span>
+<span class="st">  </span><span class="co">#Create seasonal bins-------------------------------------------------------------------------</span>
+<span class="st">  </span><span class="kw">filter</span>(<span class="kw">month</span>(Time) <span class="op">%in%</span><span class="st"> </span><span class="kw">c</span>(<span class="dv">10</span>,<span class="dv">11</span>,<span class="dv">5</span>,<span class="dv">6</span>)) <span class="op">%&gt;%</span><span class="st"> </span>
+<span class="st">  </span><span class="kw">mutate</span>(<span class="dt">season =</span> <span class="kw">ifelse</span>(<span class="kw">month</span>(Time) <span class="op">==</span><span class="st"> </span><span class="dv">11</span> <span class="op">|</span><span class="st"> </span><span class="kw">month</span>(Time) <span class="op">==</span><span class="st"> </span><span class="dv">10</span>, <span class="st">&quot;Fall&quot;</span>,<span class="st">&quot;Spring&quot;</span>)) <span class="op">%&gt;%</span><span class="st"> </span>
+<span class="st">  </span>
+<span class="st">  </span><span class="co">#Summarise------------------------------------------------------------------------------------</span>
+<span class="st">  </span><span class="kw">group_by</span>(EPU,
+           season,
+           surf_bot,
+           Var,
+           <span class="dt">Year =</span> <span class="kw">year</span>(Time)) <span class="op">%&gt;%</span><span class="st"> </span>
+<span class="st">  </span>dplyr<span class="op">::</span><span class="kw">summarise</span>(<span class="dt">Value =</span> <span class="kw">mean</span>(Value, <span class="dt">na.rm =</span> T)) <span class="op">%&gt;%</span><span class="st"> </span>
+<span class="st">  </span><span class="kw">as.data.frame</span>()</code></pre></div>
+</div>
+<div id="plot-data" class="section level2">
+<h2><span class="header-section-number">0.2</span> Plot data</h2>
+<p>Plots can be embedded easily.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">EcoMon_sum <span class="op">%&gt;%</span><span class="st"> </span>
+<span class="st">  </span><span class="kw">filter</span>(<span class="op">!</span>Var <span class="op">%in%</span><span class="st"> </span><span class="kw">c</span>(<span class="st">&quot;BTLNBR&quot;</span>,<span class="st">&quot;CASTNO&quot;</span>,<span class="st">&quot;Cruise_ID&quot;</span>,<span class="st">&quot;EXPOCODE&quot;</span>,<span class="st">&quot;STNNBR&quot;</span>)) <span class="op">%&gt;%</span><span class="st"> </span>
+<span class="st">  </span><span class="kw">ggplot</span>() <span class="op">+</span>
+<span class="st">  </span><span class="kw">geom_line</span>(<span class="kw">aes</span>(<span class="dt">x =</span> Year, <span class="dt">y =</span> Value, <span class="dt">color =</span> surf_bot)) <span class="op">+</span>
+<span class="st">  </span><span class="kw">guides</span>(<span class="dt">color =</span> <span class="kw">guide_legend</span>(<span class="st">&quot;Sampling</span><span class="ch">\n</span><span class="st"> depth&quot;</span>)) <span class="op">+</span>
+<span class="st">  </span><span class="kw">facet_grid</span>(Var<span class="op">~</span>EPU <span class="op">+</span><span class="st"> </span>season, <span class="dt">scales =</span> <span class="st">&quot;free&quot;</span>) <span class="op">+</span>
+<span class="st">  </span><span class="kw">theme_bw</span>() <span class="op">+</span>
+<span class="st">  </span><span class="kw">theme</span>(<span class="dt">axis.text.x =</span> <span class="kw">element_text</span>(<span class="dt">angle =</span> <span class="dv">45</span>, <span class="dt">hjust =</span> <span class="dv">1</span>),
+        <span class="dt">strip.text.y =</span> <span class="kw">element_text</span>(<span class="dt">size =</span> <span class="dv">6</span>)) </code></pre></div>
+<div class="figure" style="text-align: center">
+<img src="example_book_files/figure-html/ecomon_data-1.png" alt="Summarized nutrient and oceanographic data from the NEFSC EcoMon surveys in New Enlgand Ecological Production Units (EPUs)." width="90%" />
+<p class="caption">
+(#fig:ecomon_data)Summarized nutrient and oceanographic data from the NEFSC EcoMon surveys in New Enlgand Ecological Production Units (EPUs).
+</p>
+</div>
+</div>
+<div id="tables" class="section level2">
+<h2><span class="header-section-number">0.3</span> Tables</h2>
+<p>So can tables!</p>
+<div style="border: 1px solid #ddd; padding: 0px; overflow-y: scroll; height:400px; ">
+<table class="table table-striped" style="width: auto !important; margin-left: auto; margin-right: auto;">
+<caption>
+<span id="tab:unnamed-chunk-1">Table 1: </span>Variable definitions for the LME_nutrients_spatial.rdata file.
+</caption>
+<thead>
+<tr>
+<th style="text-align:left;position: sticky; top:0; background-color: #FFFFFF;">
+Variable
+</th>
+<th style="text-align:left;position: sticky; top:0; background-color: #FFFFFF;">
+Names
+</th>
+<th style="text-align:left;position: sticky; top:0; background-color: #FFFFFF;">
+Units
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left;">
+Cruise identifier
+</td>
+<td style="text-align:left;width: 5cm; ">
+EXPOCODE
+</td>
+<td style="text-align:left;">
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Cruise identifier
+</td>
+<td style="text-align:left;width: 5cm; ">
+Cruise_ID
+</td>
+<td style="text-align:left;">
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Station number
+</td>
+<td style="text-align:left;width: 5cm; ">
+STNNBR
+</td>
+<td style="text-align:left;">
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+CTD cast number
+</td>
+<td style="text-align:left;width: 5cm; ">
+CASTNO
+</td>
+<td style="text-align:left;">
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Sample bottle number
+</td>
+<td style="text-align:left;width: 5cm; ">
+BTLNBR
+</td>
+<td style="text-align:left;">
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Sample date
+</td>
+<td style="text-align:left;width: 5cm; ">
+Date_UTC
+</td>
+<td style="text-align:left;">
+MM/DD/YYYY
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Sample time
+</td>
+<td style="text-align:left;width: 5cm; ">
+Time_UTC
+</td>
+<td style="text-align:left;">
+hh:mm
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Latitude
+</td>
+<td style="text-align:left;width: 5cm; ">
+Latitude
+</td>
+<td style="text-align:left;">
+decimal degrees
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Longitude
+</td>
+<td style="text-align:left;width: 5cm; ">
+Longitude
+</td>
+<td style="text-align:left;">
+decimal degrees
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Depth of station
+</td>
+<td style="text-align:left;width: 5cm; ">
+Depth_station
+</td>
+<td style="text-align:left;">
+m
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Depth of sample
+</td>
+<td style="text-align:left;width: 5cm; ">
+Depth_sampling
+</td>
+<td style="text-align:left;">
+m
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Water pressure
+</td>
+<td style="text-align:left;width: 5cm; ">
+CTDPRS
+</td>
+<td style="text-align:left;">
+decibars
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Water temperature
+</td>
+<td style="text-align:left;width: 5cm; ">
+CTDTEMP
+</td>
+<td style="text-align:left;">
+°C
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Water salinity
+</td>
+<td style="text-align:left;width: 5cm; ">
+CTDSAL
+</td>
+<td style="text-align:left;">
+PSS-78
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Potential density at surface pressure
+</td>
+<td style="text-align:left;width: 5cm; ">
+Sigma.Theta
+</td>
+<td style="text-align:left;">
+kg m<sup>-3</sup>
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Dissolved oxygen
+</td>
+<td style="text-align:left;width: 5cm; ">
+CTDOXY
+</td>
+<td style="text-align:left;">
+mg L<sup>-1</sup>
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Silicic acid concentration
+</td>
+<td style="text-align:left;width: 5cm; ">
+SILCAT
+</td>
+<td style="text-align:left;">
+<span class="math inline">\(\mu\)</span>M
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Total nitrate and nitrite concentration
+</td>
+<td style="text-align:left;width: 5cm; ">
+NITRIT+NITRAT
+</td>
+<td style="text-align:left;">
+<span class="math inline">\(\mu\)</span>M
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Ammonia concentration
+</td>
+<td style="text-align:left;width: 5cm; ">
+AMMMONIA
+</td>
+<td style="text-align:left;">
+<span class="math inline">\(\mu\)</span>M
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Phosphate concentration
+</td>
+<td style="text-align:left;width: 5cm; ">
+PHSPHT
+</td>
+<td style="text-align:left;">
+<span class="math inline">\(\mu\)</span>M
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Dissolved oxygen
+</td>
+<td style="text-align:left;width: 5cm; ">
+CTDOXYMOL
+</td>
+<td style="text-align:left;">
+<span class="math inline">\(\mu\)</span>mol kg<sup>-1</sup>
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<div id="html-widgets" class="section level2">
+<h2><span class="header-section-number">0.4</span> HTML Widgets</h2>
+<p><a href="https://www.htmlwidgets.org/">HTML widgets</a> use R functions as wrappers for JavaScript libraries. One of the benefits of knitting <code>rmarkdown</code> documents to HTML is that we’re not limited to static images, and can take advantage of these widgets. The interactive graphing library <code>Plotly</code> is a good example of an html widget with huge flexibility for data visualization.</p>
+<div id="plotly" class="section level3">
+<h3><span class="header-section-number">0.4.1</span> Plotly</h3>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(plotly)
+<span class="co"># volcano is a numeric matrix that ships with R</span>
+p &lt;-<span class="st"> </span><span class="kw">plot_ly</span>(<span class="dt">z =</span> <span class="op">~</span>volcano) <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">add_surface</span>()
+p</code></pre></div>
+<div id="htmlwidget-bf71c62ed1bb3589fb98" style="width:672px;height:480px;" class="plotly html-widget"></div>
+<script type="application/json" data-for="htmlwidget-bf71c62ed1bb3589fb98">{"x":{"visdat":{"b9d1636eef77":["function () ","plotlyVisDat"]},"cur_data":"b9d1636eef77","attrs":{"b9d1636eef77":{"z":{},"alpha_stroke":1,"sizes":[10,100],"spans":[1,20],"type":"surface","inherit":true}},"layout":{"margin":{"b":40,"l":60,"t":25,"r":10},"scene":{"zaxis":{"title":"volcano"}},"hovermode":"closest","showlegend":false,"legend":{"yanchor":"top","y":0.5}},"source":"A","config":{"showSendToCloud":false},"data":[{"colorbar":{"title":"volcano","ticklen":2,"len":0.5,"lenmode":"fraction","y":1,"yanchor":"top"},"colorscale":[["0","rgba(68,1,84,1)"],["0.0416666666666666","rgba(70,19,97,1)"],["0.0833333333333334","rgba(72,32,111,1)"],["0.125","rgba(71,45,122,1)"],["0.166666666666667","rgba(68,58,128,1)"],["0.208333333333333","rgba(64,70,135,1)"],["0.25","rgba(60,82,138,1)"],["0.291666666666667","rgba(56,93,140,1)"],["0.333333333333333","rgba(49,104,142,1)"],["0.375","rgba(46,114,142,1)"],["0.416666666666666","rgba(42,123,142,1)"],["0.458333333333333","rgba(38,133,141,1)"],["0.5","rgba(37,144,140,1)"],["0.541666666666667","rgba(33,154,138,1)"],["0.583333333333333","rgba(39,164,133,1)"],["0.625","rgba(47,174,127,1)"],["0.666666666666667","rgba(53,183,121,1)"],["0.708333333333333","rgba(79,191,110,1)"],["0.75","rgba(98,199,98,1)"],["0.791666666666667","rgba(119,207,85,1)"],["0.833333333333333","rgba(147,214,70,1)"],["0.875","rgba(172,220,52,1)"],["0.916666666666667","rgba(199,225,42,1)"],["0.958333333333333","rgba(226,228,40,1)"],["1","rgba(253,231,37,1)"]],"showscale":true,"z":[[100,100,101,101,101,101,101,100,100,100,101,101,102,102,102,102,103,104,103,102,101,101,102,103,104,104,105,107,107,107,108,108,110,110,110,110,110,110,110,110,108,108,108,107,107,108,108,108,108,108,107,107,107,107,106,106,105,105,104,104,103],[101,101,102,102,102,102,102,101,101,101,102,102,103,103,103,103,104,105,104,103,102,102,103,105,106,106,107,109,110,110,110,110,111,112,113,114,116,115,114,112,110,110,110,109,108,109,109,109,109,108,108,108,108,107,107,106,106,105,105,104,104],[102,102,103,103,103,103,103,102,102,102,103,103,104,104,104,104,105,106,105,104,104,105,106,107,108,110,111,113,114,115,114,115,116,118,119,119,121,121,120,118,116,114,112,111,110,110,110,110,109,109,109,109,108,108,107,107,106,106,105,105,104],[103,103,104,104,104,104,104,103,103,103,103,104,104,104,105,105,106,107,106,106,106,107,108,110,111,114,117,118,117,119,120,121,122,124,125,126,127,127,126,124,122,120,117,116,113,111,110,110,110,109,109,109,109,108,108,107,107,106,106,105,105],[104,104,105,105,105,105,105,104,104,103,104,104,105,105,105,106,107,108,108,108,109,110,112,114,115,118,121,122,121,123,128,131,129,130,131,131,132,132,131,130,128,126,122,119,115,114,112,110,110,110,110,110,109,109,108,107,107,107,106,106,105],[105,105,105,106,106,106,106,105,105,104,104,105,105,106,106,107,109,110,110,112,113,115,116,118,119,121,124,126,126,129,134,137,137,136,136,135,136,136,136,135,133,129,126,122,118,116,115,113,111,110,110,110,110,109,108,108,108,107,107,106,106],[105,106,106,107,107,107,107,106,106,105,105,106,106,107,108,109,111,113,114,116,118,120,121,122,123,125,127,129,130,135,140,142,142,142,141,140,140,140,140,139,137,134,129,125,121,118,116,114,112,110,110,110,111,110,109,109,108,108,107,107,106],[106,107,107,108,108,108,108,107,107,106,106,107,108,108,110,113,115,117,118,120,122,124,125,127,128,129,131,134,135,141,146,147,146,146,145,144,144,144,143,142,141,139,135,130,126,122,118,116,114,112,112,113,112,110,110,109,109,108,108,107,106],[107,108,108,109,109,109,109,108,108,107,108,108,110,111,113,116,118,120,123,125,127,129,130,132,134,135,137,139,142,146,152,152,151,151,150,149,148,148,146,145,143,142,139,135,131,127,122,119,117,115,115,115,114,112,110,110,109,109,108,107,107],[108,109,109,110,110,110,110,109,109,108,110,110,113,116,118,120,122,125,127,129,133,136,138,140,141,142,148,150,151,156,158,159,158,157,158,158,154,151,149,148,146,144,141,137,134,130,125,122,120,118,117,117,115,113,111,110,110,109,108,107,107],[109,110,110,111,111,111,111,110,110,110,112,114,118,121,123,125,127,129,133,137,141,143,145,146,148,150,154,156,159,161,162,163,164,163,164,164,160,157,154,151,149,146,144,140,137,133,129,126,124,121,119,118,116,114,112,111,110,109,108,107,106],[110,110,111,113,112,111,113,112,112,114,116,119,121,124,127,129,133,138,143,146,149,149,151,153,154,157,159,160,163,165,166,167,168,168,168,168,166,162,159,157,154,152,149,144,140,136,133,131,128,125,122,119,117,115,113,111,110,109,108,107,106],[110,111,113,115,114,113,114,114,115,117,119,121,124,126,129,133,140,145,150,154,155,155,157,159,161,162,164,165,167,168,169,170,172,174,172,172,171,169,166,163,161,158,153,148,143,140,137,134,131,128,125,120,118,116,114,112,110,109,108,107,105],[111,113,115,117,116,115,116,117,117,119,121,124,126,128,132,137,143,151,156,161,161,162,163,165,166,167,168,170,171,173,175,177,179,178,177,176,176,174,171,169,165,161,156,152,148,144,140,138,135,131,127,123,119,117,115,113,111,110,108,106,105],[114,115,117,117,117,118,119,119,120,121,124,126,128,131,137,143,150,156,160,163,165,168,170,171,172,173,174,175,177,179,180,182,183,183,183,183,180,178,177,172,168,164,160,156,152,148,144,141,138,134,130,126,121,117,114,112,110,110,108,106,104],[116,118,118,118,120,121,121,122,122,123,125,128,130,134,141,147,152,156,160,165,168,170,174,176,179,180,181,181,182,182,183,184,186,187,187,184,184,181,180,176,172,168,165,161,157,153,149,145,142,138,133,129,125,120,115,111,110,110,108,106,104],[118,120,120,121,122,123,124,124,125,126,127,129,132,135,142,149,153,157,161,166,170,174,178,180,182,183,184,184,185,186,186,187,189,189,189,189,189,186,182,179,175,171,168,165,162,157,152,149,145,141,137,131,125,120,116,111,110,110,108,106,104],[120,121,122,123,124,125,126,127,127,128,130,132,134,137,142,151,155,158,162,169,172,176,181,183,184,186,187,188,189,189,189,189,190,190,191,190,190,188,186,183,180,175,171,168,165,161,157,152,149,145,141,134,127,121,116,112,110,110,108,106,104],[120,122,125,126,126,127,128,129,130,130,132,134,136,139,145,152,157,160,167,172,175,178,181,185,186,188,190,191,192,193,193,192,192,191,192,191,191,190,190,187,184,181,177,172,169,165,161,156,152,147,143,139,131,123,119,115,111,110,108,106,105],[121,124,126,128,129,129,130,131,132,133,135,137,139,143,150,154,159,164,170,173,176,179,184,186,189,190,191,192,193,194,195,194,193,192,191,191,191,191,190,190,188,184,181,177,173,169,165,160,155,149,145,142,136,129,123,118,114,110,108,108,107],[122,125,127,130,130,131,133,134,135,136,137,140,143,147,154,158,162,166,171,174,177,181,186,189,190,190,191,192,191,191,190,189,188,189,190,190,191,190,190,190,189,186,184,181,177,173,169,164,158,152,148,144,140,134,125,118,115,111,110,108,107],[122,125,128,130,132,133,135,136,137,139,140,143,147,152,157,161,164,168,172,175,179,182,186,190,190,190,190,189,187,184,184,183,182,182,183,183,183,184,185,186,187,186,185,184,181,177,173,169,163,157,149,145,141,136,130,119,116,112,110,108,106],[123,126,129,131,133,135,137,138,139,141,143,147,150,156,161,164,167,170,173,177,181,184,187,188,190,189,187,185,183,179,176,174,174,174,174,174,176,177,179,180,182,183,182,181,181,180,176,171,166,160,152,147,142,138,133,126,121,115,110,106,105],[124,127,130,132,135,137,138,140,142,144,147,149,154,157,161,165,168,171,175,178,181,184,186,187,187,184,184,181,179,175,171,169,168,168,168,169,170,172,174,177,178,179,180,181,181,180,179,174,167,161,155,148,144,139,134,128,121,115,110,106,105],[123,128,131,133,136,138,140,142,144,146,149,151,154,157,160,164,168,172,175,178,181,183,184,184,185,183,180,177,174,170,167,165,164,164,164,165,166,168,171,175,176,178,180,181,180,180,179,177,170,163,157,150,144,139,134,128,121,115,110,108,107],[123,127,131,134,136,138,140,142,144,147,149,151,154,157,160,164,168,171,174,178,180,181,181,182,183,181,178,173,169,166,163,161,161,160,160,161,163,165,168,173,176,178,179,180,181,180,180,175,173,166,159,152,145,139,134,127,121,115,110,109,108],[120,124,128,131,134,137,139,142,144,146,149,151,153,156,160,163,167,171,174,178,180,180,180,180,180,180,175,171,167,162,160,158,157,157,157,158,159,162,166,170,175,177,178,180,181,181,180,178,175,169,160,154,148,140,134,128,121,115,110,110,109],[118,121,125,129,132,134,137,140,142,145,147,149,151,155,159,163,166,169,173,177,179,180,180,180,180,179,174,169,166,161,158,156,154,153,153,154,156,159,163,169,173,175,178,180,181,180,180,179,175,170,160,154,149,142,135,128,122,116,111,110,110],[117,120,121,125,129,132,135,138,140,143,145,147,149,153,157,160,163,166,171,174,177,179,180,180,180,179,172,168,164,160,157,154,151,149,150,150,154,158,164,169,174,178,180,180,180,180,178,177,175,170,161,153,148,142,135,129,123,116,113,112,110],[115,118,120,122,126,130,133,136,138,141,143,145,148,151,154,157,160,163,168,171,174,177,179,179,179,176,171,167,164,160,156,153,149,148,149,151,155,158,163,170,173,177,179,180,180,180,178,175,173,171,162,154,147,141,136,130,124,117,115,112,110],[114,116,118,120,122,127,131,133,136,138,141,143,146,148,151,154,157,160,164,168,171,174,178,178,179,177,173,169,165,161,157,154,151,149,150,152,155,159,166,171,175,177,179,180,180,179,176,174,171,168,159,151,146,141,135,129,124,119,116,113,110],[115,114,116,118,120,122,127,129,132,136,139,141,143,146,148,151,153,156,160,164,167,172,174,176,177,176,173,170,166,162,159,157,154,153,154,155,158,161,169,172,174,176,178,178,178,178,175,172,169,162,156,149,144,140,134,128,123,118,115,112,110],[113,113,114,116,118,120,122,125,129,133,136,138,141,143,146,149,150,153,156,160,165,170,173,176,176,176,173,172,169,165,163,160,158,157,158,159,161,166,170,170,173,175,176,178,176,173,171,168,164,158,153,146,140,137,132,127,121,117,113,111,110],[111,112,113,114,116,118,120,122,126,130,133,136,139,142,145,147,148,151,155,158,163,168,173,176,177,177,176,174,171,169,166,164,161,161,162,164,165,167,170,170,171,173,173,173,170,168,165,163,160,155,149,143,138,134,130,125,119,116,112,110,109],[110,112,113,113,114,116,118,120,123,127,131,134,137,141,143,145,148,150,154,157,161,166,171,176,178,178,178,176,174,172,170,167,167,167,166,168,170,169,168,167,168,168,168,168,167,165,163,160,156,152,146,140,136,131,128,122,118,114,110,110,109],[109,110,111,112,114,116,118,119,120,124,128,131,136,140,142,145,147,150,153,157,160,165,170,174,178,179,179,178,178,176,174,171,170,170,170,168,167,166,164,163,161,162,163,163,163,161,160,157,153,148,142,136,130,127,124,120,117,113,110,110,109],[108,109,111,112,114,116,117,118,120,121,125,128,132,138,142,144,147,149,153,156,160,164,170,174,178,180,180,179,179,178,176,172,170,170,170,168,166,164,162,160,157,156,157,158,158,156,153,151,149,144,139,130,127,124,121,118,115,112,110,110,109],[108,109,111,113,114,116,117,118,119,120,122,126,130,135,139,143,147,149,152,156,160,164,169,173,177,180,180,180,180,179,178,174,170,170,168,167,165,163,161,157,154,153,152,152,152,149,148,147,144,140,134,128,125,122,119,117,114,110,110,109,109],[107,108,111,112,114,115,116,117,119,120,121,124,128,133,137,141,145,149,152,156,160,164,168,172,176,179,180,180,180,179,178,174,170,168,166,165,163,161,158,154,150,149,148,146,145,143,143,143,140,136,130,126,123,120,118,115,112,110,110,109,109],[107,108,110,112,113,113,115,116,118,120,122,125,128,132,136,140,145,148,150,155,160,164,167,170,174,177,179,179,178,176,176,173,169,166,164,163,161,159,155,152,148,145,143,141,140,139,139,138,136,132,128,124,121,118,116,114,111,110,110,109,108],[107,108,109,111,113,114,116,117,119,120,122,125,128,132,137,141,144,146,149,152,157,162,166,168,171,173,175,175,173,172,172,171,168,165,162,160,158,156,153,149,145,142,139,138,137,136,135,133,131,129,126,122,119,117,114,112,110,110,109,108,107],[108,109,110,112,114,115,116,117,119,120,122,126,129,133,137,141,143,146,148,151,155,160,164,167,168,169,170,170,169,168,167,168,166,163,160,158,155,153,150,147,143,140,137,136,134,133,132,130,129,127,125,121,118,115,112,110,110,110,108,107,107],[109,110,111,113,115,116,117,118,120,121,123,126,129,133,138,141,143,146,148,150,155,159,163,165,166,167,168,168,166,165,164,161,160,159,158,155,152,149,147,144,141,138,135,134,132,130,129,128,126,124,122,120,117,113,111,110,110,110,108,107,107],[110,111,112,113,116,117,118,119,120,122,125,127,130,133,138,141,143,146,148,150,154,159,162,163,164,166,166,166,165,163,161,159,157,156,155,153,150,146,143,140,138,136,133,132,130,129,128,125,124,122,120,119,117,114,111,110,110,109,108,107,107],[111,112,113,114,116,117,118,119,120,123,125,128,130,134,139,141,144,146,148,151,154,158,161,164,166,167,168,166,165,163,161,158,156,154,152,150,146,142,139,137,135,133,131,130,129,128,127,125,123,121,120,118,116,113,111,110,110,109,108,107,106],[111,112,113,115,117,118,118,120,121,124,126,128,131,135,139,142,144,146,148,151,155,160,164,165,168,169,169,168,166,163,160,158,156,153,151,148,145,142,139,137,135,132,130,129,127,126,125,124,123,120,120,117,116,114,112,110,110,108,107,106,106],[112,113,114,116,117,118,119,120,122,124,127,129,132,135,139,142,144,146,149,152,157,162,167,169,170,170,170,168,165,163,161,159,157,155,151,148,145,141,139,136,134,132,130,128,127,126,124,123,122,120,119,117,116,114,112,111,109,107,106,106,105],[113,114,115,116,117,119,119,120,122,125,127,129,132,135,139,142,144,147,149,154,159,164,169,170,170,170,170,170,168,165,163,161,158,155,151,148,145,142,139,137,135,132,131,128,126,125,124,122,121,120,119,117,115,113,111,110,109,106,105,105,104],[113,114,115,117,118,119,120,121,123,125,127,130,132,135,139,142,145,148,150,156,161,166,170,170,170,170,170,170,169,166,163,161,159,155,151,148,146,143,140,138,135,134,132,130,127,125,123,121,120,120,119,116,114,112,110,110,108,106,105,104,104],[114,115,116,117,118,119,120,121,123,126,128,130,133,136,139,142,145,148,152,157,161,166,168,170,170,170,170,168,166,164,163,160,159,155,151,148,146,143,141,138,136,134,132,130,128,125,123,121,120,120,118,116,113,111,110,110,109,106,105,104,104],[115,116,117,118,119,120,121,121,123,126,128,131,134,136,139,142,145,149,152,157,161,163,164,166,168,167,166,164,163,161,160,158,156,152,149,147,144,143,141,139,136,134,132,130,128,125,122,120,120,119,117,115,113,110,110,109,107,106,105,104,104],[115,116,117,118,119,120,121,122,123,125,128,131,134,137,139,142,145,149,152,156,159,159,160,162,162,161,161,160,159,158,157,155,153,150,148,146,145,143,142,140,137,134,131,129,126,124,122,120,119,117,115,113,111,110,109,109,107,106,105,104,104],[114,115,116,116,118,119,120,121,122,126,129,132,135,137,140,143,146,149,152,155,156,157,158,159,159,159,158,158,157,155,153,151,150,149,147,146,145,144,142,141,138,135,132,128,125,122,120,118,117,115,113,112,110,109,108,108,106,105,105,104,104],[113,114,115,116,117,118,119,120,123,126,129,132,135,138,140,143,146,148,151,153,154,156,157,157,157,157,156,155,154,152,150,149,148,147,146,145,144,142,141,140,139,136,132,129,125,121,118,116,115,113,111,110,109,108,108,107,106,105,104,104,104],[112,113,114,115,116,117,119,120,122,126,130,133,136,138,141,143,146,148,150,152,154,155,155,155,155,155,154,152,152,150,148,147,146,145,145,143,142,141,140,140,140,137,133,129,125,120,117,115,111,110,110,109,108,107,107,106,105,105,104,104,103],[111,112,114,115,116,117,118,120,122,125,131,134,137,139,142,144,146,148,150,152,153,153,153,153,153,153,153,151,149,147,146,144,144,143,143,142,141,140,140,140,140,138,134,130,123,120,118,111,110,110,110,108,107,106,108,105,105,104,104,103,103],[111,112,113,115,115,116,117,119,121,126,131,135,138,140,142,144,146,148,150,151,151,151,151,151,151,151,151,150,148,146,144,142,141,141,142,141,140,140,140,140,140,140,136,132,126,120,115,110,110,110,109,107,106,105,107,105,104,104,104,103,103],[112,113,113,114,115,116,117,119,122,127,132,135,139,141,143,145,147,149,150,150,150,150,150,150,150,150,150,149,147,144,142,141,140,140,140,140,140,140,140,140,140,140,137,133,128,120,117,110,110,110,108,106,105,105,106,105,104,104,103,103,103],[112,113,114,114,116,117,118,120,122,128,132,136,139,141,144,146,147,149,150,150,150,150,150,150,150,150,150,149,146,143,141,140,140,139,139,139,140,140,140,140,140,140,137,133,129,121,118,110,110,109,107,106,105,105,105,104,104,103,103,103,102],[112,114,114,115,116,117,119,120,122,128,133,136,140,142,144,146,148,150,150,150,150,150,150,150,150,150,150,148,145,142,140,138,138,138,137,138,140,140,140,140,140,140,137,134,130,122,118,110,110,108,106,105,103,104,104,104,104,103,103,102,102],[113,114,115,116,116,117,118,120,123,129,133,137,140,142,144,146,149,150,150,150,150,150,150,150,150,150,150,147,143,141,139,137,136,136,135,136,138,140,140,140,140,139,136,134,130,123,119,113,109,108,106,104,103,104,104,104,103,103,102,102,101],[114,115,115,116,117,118,118,120,123,129,133,137,140,143,145,147,150,150,150,150,150,150,150,150,150,150,148,145,142,139,138,136,135,134,134,134,136,138,137,138,139,137,134,132,125,122,117,114,109,107,105,103,102,104,104,103,103,102,102,101,101],[114,115,116,117,117,119,118,120,123,128,132,136,139,142,145,148,150,150,150,150,150,150,150,150,150,150,147,144,141,139,136,135,134,133,132,132,134,134,134,134,135,133,131,128,124,120,116,113,110,107,104,102,102,103,103,103,102,102,102,101,100],[115,116,116,117,118,119,119,120,124,128,132,136,139,142,145,148,150,150,150,150,150,150,150,150,150,149,146,143,140,138,135,134,133,131,131,131,131,131,131,131,130,127,124,122,119,117,115,112,109,106,104,101,102,103,103,102,102,102,101,100,100],[115,116,117,118,118,119,120,123,125,128,131,135,138,141,145,148,150,150,150,150,150,150,150,150,150,147,145,142,139,137,134,132,131,130,129,128,128,128,128,128,126,123,121,119,116,114,112,110,108,105,103,101,103,103,103,102,102,101,100,100,100],[116,117,118,118,119,120,122,123,125,128,131,134,137,141,145,148,149,150,150,150,150,150,150,150,148,145,143,141,138,135,133,130,129,128,127,126,125,125,125,124,123,120,118,116,114,111,109,107,106,104,102,100,101,101,102,102,101,100,100,100,100],[116,117,118,119,120,121,123,124,126,128,130,133,137,140,144,145,147,148,149,150,149,149,147,146,144,141,139,136,133,131,129,128,127,126,125,124,123,123,122,121,120,118,116,114,112,108,107,105,103,102,100,100,100,100,101,101,100,100,100,100,100],[117,118,119,119,120,121,123,124,126,128,129,131,135,139,142,143,145,146,147,147,147,146,144,142,140,138,135,133,130,128,127,126,125,124,123,122,121,120,119,118,117,115,114,112,110,106,105,102,101,100,100,100,100,100,100,100,100,99,99,99,99],[117,118,119,120,120,121,123,124,125,126,128,129,132,137,140,142,143,143,144,144,144,143,141,139,137,135,133,130,128,127,126,125,123,122,121,120,119,117,116,115,114,112,111,108,107,105,100,100,100,100,100,100,100,99,99,99,99,99,99,99,98],[116,117,118,120,120,121,122,123,124,125,126,128,130,134,139,140,141,141,141,141,141,140,138,136,134,133,131,129,127,125,124,123,122,120,119,118,117,116,114,112,111,108,109,106,106,100,100,100,100,100,99,99,99,99,99,99,99,98,98,98,97],[114,115,116,117,119,119,120,121,122,123,125,127,129,133,136,134,134,136,138,138,137,137,135,133,132,130,129,127,125,124,122,121,120,119,117,116,115,114,112,110,109,108,107,105,105,100,100,100,100,99,99,99,98,98,98,98,98,97,97,97,97],[112,113,114,115,116,116,117,119,120,122,124,126,127,129,129,128,127,129,132,133,133,133,133,131,129,127,126,125,124,122,121,119,118,117,116,114,113,112,110,109,108,106,106,105,100,100,100,98,98,98,98,98,98,97,97,97,97,97,97,97,96],[109,111,112,112,113,113,113,114,116,119,121,123,124,125,124,123,123,123,125,127,129,129,128,128,127,125,124,123,122,121,119,118,117,116,114,113,112,110,109,108,107,106,105,100,100,100,97,97,97,97,97,97,97,96,96,96,96,96,96,96,96],[106,107,108,108,109,110,110,112,113,114,117,119,120,121,119,117,117,117,118,120,123,124,125,125,125,123,121,120,120,119,118,117,116,115,114,113,111,109,109,107,106,105,100,100,100,96,96,96,96,96,96,96,96,96,96,96,96,96,96,96,96],[104,105,105,106,106,107,108,108,109,109,111,115,116,114,113,112,111,110,111,113,116,119,122,122,122,121,120,119,118,118,117,116,115,114,113,112,111,108,108,106,105,100,100,100,96,96,96,96,96,96,96,96,96,96,96,96,96,96,96,96,96],[102,103,103,104,104,105,106,106,107,108,109,111,112,110,109,108,108,108,108,109,110,112,116,117,117,118,118,118,117,116,116,115,114,113,112,111,110,107,107,105,100,100,100,97,96,96,96,96,96,96,96,96,96,96,96,96,96,96,96,96,96],[101,102,103,103,104,105,105,106,106,107,108,109,109,107,106,106,105,105,105,106,107,108,109,110,111,113,114,115,115,115,114,113,112,111,110,108,108,106,105,100,100,100,97,97,96,96,96,96,96,96,96,96,96,96,96,96,96,96,96,96,96],[100,101,102,102,103,103,104,104,105,106,106,107,106,106,106,105,105,104,103,103,104,105,107,108,110,111,111,112,112,113,113,112,111,110,108,107,106,105,100,100,100,98,97,97,96,96,96,96,96,96,96,96,96,96,96,96,96,96,96,96,96],[100,101,101,102,102,103,103,104,104,105,105,105,105,106,105,105,104,103,102,101,102,103,104,106,107,110,111,111,111,112,112,112,110,107,107,106,105,102,100,100,99,98,97,97,96,96,96,96,96,96,96,96,96,96,96,96,96,96,96,96,95],[99,100,101,102,102,103,103,103,104,104,104,104,103,104,104,104,104,102,101,101,102,103,104,105,107,110,111,111,111,111,111,111,108,106,105,105,102,101,100,99,99,98,97,97,96,96,96,96,96,96,96,96,96,96,96,96,96,96,96,95,95],[99,100,100,101,101,102,102,102,103,103,103,103,102,103,103,104,103,102,101,101,101,102,103,104,106,109,110,111,111,111,110,110,107,105,103,104,100,100,99,99,98,98,97,97,96,96,96,96,96,96,96,96,96,96,95,95,95,95,95,95,95],[99,100,100,100,101,101,101,102,102,103,102,102,101,102,102,103,103,101,101,100,101,101,102,103,105,109,110,110,111,110,110,109,106,105,100,102,100,99,99,99,98,98,97,97,96,96,96,96,96,96,95,95,95,95,95,95,95,95,95,95,94],[99,99,99,99,100,100,101,101,102,102,101,101,101,101,101,102,102,101,100,100,101,101,101,103,104,107,109,109,110,110,109,108,105,102,100,100,99,99,99,98,98,98,97,96,96,96,96,96,95,95,95,95,95,95,95,94,94,94,94,94,94],[98,99,99,99,99,100,100,101,101,102,101,100,100,100,101,101,101,100,100,100,100,101,101,101,103,106,107,109,109,109,109,107,104,101,100,99,99,99,98,98,98,97,96,96,96,96,95,95,95,95,95,95,95,94,94,94,94,94,94,94,94],[98,98,98,99,99,99,100,100,101,101,100,100,99,99,100,100,100,100,100,100,100,101,101,101,102,105,106,109,108,109,107,105,102,100,100,99,99,98,98,98,97,96,96,96,96,95,95,95,95,95,95,94,94,94,94,94,94,94,94,94,94],[97,98,98,98,99,99,99,100,100,100,100,100,99,99,99,100,100,100,100,100,100,100,101,101,101,103,104,105,106,105,104,101,100,100,99,99,98,98,97,97,97,96,96,96,95,95,95,95,95,94,94,94,94,94,94,94,94,94,94,94,94],[97,97,97,98,98,99,99,99,100,100,100,99,99,99,99,99,100,100,100,100,100,100,101,101,100,100,100,100,100,100,100,100,100,100,99,99,98,97,97,97,96,96,96,95,95,95,95,94,94,94,94,94,94,94,94,94,94,94,94,94,94]],"type":"surface","frame":null}],"highlight":{"on":"plotly_click","persistent":false,"dynamic":false,"selectize":false,"opacityDim":0.2,"selected":{"opacity":1},"debounce":0},"shinyEvents":["plotly_hover","plotly_click","plotly_selected","plotly_relayout","plotly_brushed","plotly_brushing","plotly_clickannotation","plotly_doubleclick","plotly_deselect","plotly_afterplot"],"base_url":"https://plot.ly"},"evals":[],"jsHooks":[]}</script>
+</div>
+<div id="plotlyggplotly" class="section level3">
+<h3><span class="header-section-number">0.4.2</span> plotly::ggplotly()</h3>
+<p>Figures produced with <code>ggplot2</code> can be made interactive by passing <code>ggplot</code> objects to the <code>ggplotly</code> function. For example:</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">n_gg &lt;-<span class="st"> </span>EcoMon_sum <span class="op">%&gt;%</span><span class="st"> </span>
+<span class="st">  </span><span class="kw">filter</span>(Var <span class="op">%in%</span><span class="st"> </span><span class="kw">c</span>(<span class="st">&quot;NITRIT.NITRAT&quot;</span>)) <span class="op">%&gt;%</span><span class="st"> </span>
+<span class="st">  </span><span class="kw">ggplot</span>() <span class="op">+</span>
+<span class="st">  </span><span class="kw">geom_line</span>(<span class="kw">aes</span>(<span class="dt">x =</span> Year, <span class="dt">y =</span> Value, <span class="dt">color =</span> surf_bot)) <span class="op">+</span>
+<span class="st">  </span><span class="kw">facet_grid</span>(EPU<span class="op">~</span>season)
+
+<span class="kw">ggplotly</span>(n_gg) <span class="op">%&gt;%</span><span class="st"> </span>
+<span class="st">  </span><span class="kw">layout</span>(<span class="dt">legend =</span> <span class="kw">list</span>(<span class="dt">orientation =</span> <span class="st">&#39;h&#39;</span>,
+                       <span class="dt">y =</span> <span class="op">-</span><span class="fl">0.1</span>))</code></pre></div>
+<div id="htmlwidget-12114cf0f1a028751b7e" style="width:672px;height:480px;" class="plotly html-widget"></div>
+<script type="application/json" data-for="htmlwidget-12114cf0f1a028751b7e">{"x":{"data":[{"x":[2009,2010,2011,2012,2013,2014,2015,2017],"y":[3.37777777777778,8.3,5.16666666666667,4.05294117647059,3.45,13.0413793103448,14.12,2.2],"text":["Year: 2009<br />Value:  3.3777778<br />surf_bot: Bottom","Year: 2010<br />Value:  8.3000000<br />surf_bot: Bottom","Year: 2011<br />Value:  5.1666667<br />surf_bot: Bottom","Year: 2012<br />Value:  4.0529412<br />surf_bot: Bottom","Year: 2013<br />Value:  3.4500000<br />surf_bot: Bottom","Year: 2014<br />Value: 13.0413793<br />surf_bot: Bottom","Year: 2015<br />Value: 14.1200000<br />surf_bot: Bottom","Year: 2017<br />Value:  2.2000000<br />surf_bot: Bottom"],"type":"scatter","mode":"lines","line":{"width":1.88976377952756,"color":"rgba(248,118,109,1)","dash":"solid"},"hoveron":"points","name":"Bottom","legendgroup":"Bottom","showlegend":true,"xaxis":"x","yaxis":"y","hoverinfo":"text","frame":null},{"x":[2011,2012,2013,2015,2016,2017,2018],"y":[1.73703703703704,3.64285714285714,6.82758620689655,5.50967741935484,0.841176470588235,1.4375,2.964],"text":["Year: 2011<br />Value:  1.7370370<br />surf_bot: Bottom","Year: 2012<br />Value:  3.6428571<br />surf_bot: Bottom","Year: 2013<br />Value:  6.8275862<br />surf_bot: Bottom","Year: 2015<br />Value:  5.5096774<br />surf_bot: Bottom","Year: 2016<br />Value:  0.8411765<br />surf_bot: Bottom","Year: 2017<br />Value:  1.4375000<br />surf_bot: Bottom","Year: 2018<br />Value:  2.9640000<br />surf_bot: Bottom"],"type":"scatter","mode":"lines","line":{"width":1.88976377952756,"color":"rgba(248,118,109,1)","dash":"solid"},"hoveron":"points","name":"Bottom","legendgroup":"Bottom","showlegend":false,"xaxis":"x2","yaxis":"y","hoverinfo":"text","frame":null},{"x":[2009,2010,2011,2012,2013,2014,2015,2017],"y":[16.3695652173913,8.2,17.57,12.6901960784314,11.4611111111111,12.6243902439024,11.2342857142857,10.7979591836735],"text":["Year: 2009<br />Value: 16.3695652<br />surf_bot: Bottom","Year: 2010<br />Value:  8.2000000<br />surf_bot: Bottom","Year: 2011<br />Value: 17.5700000<br />surf_bot: Bottom","Year: 2012<br />Value: 12.6901961<br />surf_bot: Bottom","Year: 2013<br />Value: 11.4611111<br />surf_bot: Bottom","Year: 2014<br />Value: 12.6243902<br />surf_bot: Bottom","Year: 2015<br />Value: 11.2342857<br />surf_bot: Bottom","Year: 2017<br />Value: 10.7979592<br />surf_bot: Bottom"],"type":"scatter","mode":"lines","line":{"width":1.88976377952756,"color":"rgba(248,118,109,1)","dash":"solid"},"hoveron":"points","name":"Bottom","legendgroup":"Bottom","showlegend":false,"xaxis":"x","yaxis":"y2","hoverinfo":"text","frame":null},{"x":[2011,2013,2015,2016,2017,2018],"y":[12.3632653061224,9.12325581395349,9.96481481481482,10.2440366972477,11.3953125,10.348],"text":["Year: 2011<br />Value: 12.3632653<br />surf_bot: Bottom","Year: 2013<br />Value:  9.1232558<br />surf_bot: Bottom","Year: 2015<br />Value:  9.9648148<br />surf_bot: Bottom","Year: 2016<br />Value: 10.2440367<br />surf_bot: Bottom","Year: 2017<br />Value: 11.3953125<br />surf_bot: Bottom","Year: 2018<br />Value: 10.3480000<br />surf_bot: Bottom"],"type":"scatter","mode":"lines","line":{"width":1.88976377952756,"color":"rgba(248,118,109,1)","dash":"solid"},"hoveron":"points","name":"Bottom","legendgroup":"Bottom","showlegend":false,"xaxis":"x2","yaxis":"y2","hoverinfo":"text","frame":null},{"x":[2010,2012,2014],"y":[16.6947368421053,10.5,10.9933333333333],"text":["Year: 2010<br />Value: 16.6947368<br />surf_bot: Bottom","Year: 2012<br />Value: 10.5000000<br />surf_bot: Bottom","Year: 2014<br />Value: 10.9933333<br />surf_bot: Bottom"],"type":"scatter","mode":"lines","line":{"width":1.88976377952756,"color":"rgba(248,118,109,1)","dash":"solid"},"hoveron":"points","name":"Bottom","legendgroup":"Bottom","showlegend":false,"xaxis":"x","yaxis":"y3","hoverinfo":"text","frame":null},{"x":[2011,2013,2015,2016,2017,2018],"y":[8.6,12.3,13.98,14.6702702702703,15.7,17.5],"text":["Year: 2011<br />Value:  8.6000000<br />surf_bot: Bottom","Year: 2013<br />Value: 12.3000000<br />surf_bot: Bottom","Year: 2015<br />Value: 13.9800000<br />surf_bot: Bottom","Year: 2016<br />Value: 14.6702703<br />surf_bot: Bottom","Year: 2017<br />Value: 15.7000000<br />surf_bot: Bottom","Year: 2018<br />Value: 17.5000000<br />surf_bot: Bottom"],"type":"scatter","mode":"lines","line":{"width":1.88976377952756,"color":"rgba(248,118,109,1)","dash":"solid"},"hoveron":"points","name":"Bottom","legendgroup":"Bottom","showlegend":false,"xaxis":"x2","yaxis":"y3","hoverinfo":"text","frame":null},{"x":[2009,2010,2011,2012,2013,2014,2015,2017],"y":[4.32608695652174,5.72794117647059,4.36666666666667,3.86330935251799,10.2944444444444,6.74864864864865,6.32121212121212,8.0925],"text":["Year: 2009<br />Value:  4.3260870<br />surf_bot: mid-water","Year: 2010<br />Value:  5.7279412<br />surf_bot: mid-water","Year: 2011<br />Value:  4.3666667<br />surf_bot: mid-water","Year: 2012<br />Value:  3.8633094<br />surf_bot: mid-water","Year: 2013<br />Value: 10.2944444<br />surf_bot: mid-water","Year: 2014<br />Value:  6.7486486<br />surf_bot: mid-water","Year: 2015<br />Value:  6.3212121<br />surf_bot: mid-water","Year: 2017<br />Value:  8.0925000<br />surf_bot: mid-water"],"type":"scatter","mode":"lines","line":{"width":1.88976377952756,"color":"rgba(0,186,56,1)","dash":"solid"},"hoveron":"points","name":"mid-water","legendgroup":"mid-water","showlegend":true,"xaxis":"x","yaxis":"y","hoverinfo":"text","frame":null},{"x":[2011,2012,2013,2015,2016,2017,2018],"y":[1.63142857142857,1.84666666666667,3.69127906976744,3.06363636363636,4.86115107913669,5.73150684931507,5.41475409836066],"text":["Year: 2011<br />Value:  1.6314286<br />surf_bot: mid-water","Year: 2012<br />Value:  1.8466667<br />surf_bot: mid-water","Year: 2013<br />Value:  3.6912791<br />surf_bot: mid-water","Year: 2015<br />Value:  3.0636364<br />surf_bot: mid-water","Year: 2016<br />Value:  4.8611511<br />surf_bot: mid-water","Year: 2017<br />Value:  5.7315068<br />surf_bot: mid-water","Year: 2018<br />Value:  5.4147541<br />surf_bot: mid-water"],"type":"scatter","mode":"lines","line":{"width":1.88976377952756,"color":"rgba(0,186,56,1)","dash":"solid"},"hoveron":"points","name":"mid-water","legendgroup":"mid-water","showlegend":false,"xaxis":"x2","yaxis":"y","hoverinfo":"text","frame":null},{"x":[2009,2010,2011,2012,2013,2014,2015,2017],"y":[9.80681818181818,6.58275862068966,6.34285714285714,7.52918032786885,8.49349593495935,9.69556074766355,5.4477366255144,6.05685279187817],"text":["Year: 2009<br />Value:  9.8068182<br />surf_bot: mid-water","Year: 2010<br />Value:  6.5827586<br />surf_bot: mid-water","Year: 2011<br />Value:  6.3428571<br />surf_bot: mid-water","Year: 2012<br />Value:  7.5291803<br />surf_bot: mid-water","Year: 2013<br />Value:  8.4934959<br />surf_bot: mid-water","Year: 2014<br />Value:  9.6955607<br />surf_bot: mid-water","Year: 2015<br />Value:  5.4477366<br />surf_bot: mid-water","Year: 2017<br />Value:  6.0568528<br />surf_bot: mid-water"],"type":"scatter","mode":"lines","line":{"width":1.88976377952756,"color":"rgba(0,186,56,1)","dash":"solid"},"hoveron":"points","name":"mid-water","legendgroup":"mid-water","showlegend":false,"xaxis":"x","yaxis":"y2","hoverinfo":"text","frame":null},{"x":[2011,2013,2015,2016,2017,2018],"y":[3.7616,5.3429718875502,6.61673819742489,5.36037037037037,5.98,8.28517350157729],"text":["Year: 2011<br />Value:  3.7616000<br />surf_bot: mid-water","Year: 2013<br />Value:  5.3429719<br />surf_bot: mid-water","Year: 2015<br />Value:  6.6167382<br />surf_bot: mid-water","Year: 2016<br />Value:  5.3603704<br />surf_bot: mid-water","Year: 2017<br />Value:  5.9800000<br />surf_bot: mid-water","Year: 2018<br />Value:  8.2851735<br />surf_bot: mid-water"],"type":"scatter","mode":"lines","line":{"width":1.88976377952756,"color":"rgba(0,186,56,1)","dash":"solid"},"hoveron":"points","name":"mid-water","legendgroup":"mid-water","showlegend":false,"xaxis":"x2","yaxis":"y2","hoverinfo":"text","frame":null},{"x":[2009,2010,2012,2013,2014],"y":[8.70666666666667,8.96867469879518,9.0319587628866,10.1142857142857,10.7349315068493],"text":["Year: 2009<br />Value:  8.7066667<br />surf_bot: mid-water","Year: 2010<br />Value:  8.9686747<br />surf_bot: mid-water","Year: 2012<br />Value:  9.0319588<br />surf_bot: mid-water","Year: 2013<br />Value: 10.1142857<br />surf_bot: mid-water","Year: 2014<br />Value: 10.7349315<br />surf_bot: mid-water"],"type":"scatter","mode":"lines","line":{"width":1.88976377952756,"color":"rgba(0,186,56,1)","dash":"solid"},"hoveron":"points","name":"mid-water","legendgroup":"mid-water","showlegend":false,"xaxis":"x","yaxis":"y3","hoverinfo":"text","frame":null},{"x":[2011,2013,2015,2016,2017,2018],"y":[3.55,5.43333333333333,7.08928571428571,7.34410256410256,7.82222222222222,7.0125],"text":["Year: 2011<br />Value:  3.5500000<br />surf_bot: mid-water","Year: 2013<br />Value:  5.4333333<br />surf_bot: mid-water","Year: 2015<br />Value:  7.0892857<br />surf_bot: mid-water","Year: 2016<br />Value:  7.3441026<br />surf_bot: mid-water","Year: 2017<br />Value:  7.8222222<br />surf_bot: mid-water","Year: 2018<br />Value:  7.0125000<br />surf_bot: mid-water"],"type":"scatter","mode":"lines","line":{"width":1.88976377952756,"color":"rgba(0,186,56,1)","dash":"solid"},"hoveron":"points","name":"mid-water","legendgroup":"mid-water","showlegend":false,"xaxis":"x2","yaxis":"y3","hoverinfo":"text","frame":null},{"x":[2009,2010,2011,2012,2013,2014,2015,2017],"y":[4.80666666666667,3.09259259259259,4.2,2.05384615384615,2.45,1.9468085106383,0.809090909090909,0.3],"text":["Year: 2009<br />Value:  4.8066667<br />surf_bot: Surface","Year: 2010<br />Value:  3.0925926<br />surf_bot: Surface","Year: 2011<br />Value:  4.2000000<br />surf_bot: Surface","Year: 2012<br />Value:  2.0538462<br />surf_bot: Surface","Year: 2013<br />Value:  2.4500000<br />surf_bot: Surface","Year: 2014<br />Value:  1.9468085<br />surf_bot: Surface","Year: 2015<br />Value:  0.8090909<br />surf_bot: Surface","Year: 2017<br />Value:  0.3000000<br />surf_bot: Surface"],"type":"scatter","mode":"lines","line":{"width":1.88976377952756,"color":"rgba(97,156,255,1)","dash":"solid"},"hoveron":"points","name":"Surface","legendgroup":"Surface","showlegend":true,"xaxis":"x","yaxis":"y","hoverinfo":"text","frame":null},{"x":[2011,2012,2013,2015,2016,2017,2018],"y":[0.384615384615385,0.54,1.37,3.87096774193548,0.315384615384615,0.592307692307692,1.40333333333333],"text":["Year: 2011<br />Value:  0.3846154<br />surf_bot: Surface","Year: 2012<br />Value:  0.5400000<br />surf_bot: Surface","Year: 2013<br />Value:  1.3700000<br />surf_bot: Surface","Year: 2015<br />Value:  3.8709677<br />surf_bot: Surface","Year: 2016<br />Value:  0.3153846<br />surf_bot: Surface","Year: 2017<br />Value:  0.5923077<br />surf_bot: Surface","Year: 2018<br />Value:  1.4033333<br />surf_bot: Surface"],"type":"scatter","mode":"lines","line":{"width":1.88976377952756,"color":"rgba(97,156,255,1)","dash":"solid"},"hoveron":"points","name":"Surface","legendgroup":"Surface","showlegend":false,"xaxis":"x2","yaxis":"y","hoverinfo":"text","frame":null},{"x":[2009,2010,2011,2012,2013,2014,2015,2017],"y":[4.34814814814815,4.63461538461539,4.1,3.73888888888889,4.44098360655738,5.34871794871795,0.168888888888889,1.49803921568627],"text":["Year: 2009<br />Value:  4.3481481<br />surf_bot: Surface","Year: 2010<br />Value:  4.6346154<br />surf_bot: Surface","Year: 2011<br />Value:  4.1000000<br />surf_bot: Surface","Year: 2012<br />Value:  3.7388889<br />surf_bot: Surface","Year: 2013<br />Value:  4.4409836<br />surf_bot: Surface","Year: 2014<br />Value:  5.3487179<br />surf_bot: Surface","Year: 2015<br />Value:  0.1688889<br />surf_bot: Surface","Year: 2017<br />Value:  1.4980392<br />surf_bot: Surface"],"type":"scatter","mode":"lines","line":{"width":1.88976377952756,"color":"rgba(97,156,255,1)","dash":"solid"},"hoveron":"points","name":"Surface","legendgroup":"Surface","showlegend":false,"xaxis":"x","yaxis":"y2","hoverinfo":"text","frame":null},{"x":[2011,2013,2015,2016,2017,2018],"y":[0.12,0.157142857142857,0.567164179104478,0.365686274509804,0.475,0.522413793103448],"text":["Year: 2011<br />Value:  0.1200000<br />surf_bot: Surface","Year: 2013<br />Value:  0.1571429<br />surf_bot: Surface","Year: 2015<br />Value:  0.5671642<br />surf_bot: Surface","Year: 2016<br />Value:  0.3656863<br />surf_bot: Surface","Year: 2017<br />Value:  0.4750000<br />surf_bot: Surface","Year: 2018<br />Value:  0.5224138<br />surf_bot: Surface"],"type":"scatter","mode":"lines","line":{"width":1.88976377952756,"color":"rgba(97,156,255,1)","dash":"solid"},"hoveron":"points","name":"Surface","legendgroup":"Surface","showlegend":false,"xaxis":"x2","yaxis":"y2","hoverinfo":"text","frame":null},{"x":[2009,2010,2012,2013,2014],"y":[4.98181818181818,4.032,3.86923076923077,2,5.83333333333333],"text":["Year: 2009<br />Value:  4.9818182<br />surf_bot: Surface","Year: 2010<br />Value:  4.0320000<br />surf_bot: Surface","Year: 2012<br />Value:  3.8692308<br />surf_bot: Surface","Year: 2013<br />Value:  2.0000000<br />surf_bot: Surface","Year: 2014<br />Value:  5.8333333<br />surf_bot: Surface"],"type":"scatter","mode":"lines","line":{"width":1.88976377952756,"color":"rgba(97,156,255,1)","dash":"solid"},"hoveron":"points","name":"Surface","legendgroup":"Surface","showlegend":false,"xaxis":"x","yaxis":"y3","hoverinfo":"text","frame":null},{"x":[2011,2013,2015,2016,2017,2018],"y":[0.1,2.8,3.75,3.00185185185185,0.4,0.7],"text":["Year: 2011<br />Value:  0.1000000<br />surf_bot: Surface","Year: 2013<br />Value:  2.8000000<br />surf_bot: Surface","Year: 2015<br />Value:  3.7500000<br />surf_bot: Surface","Year: 2016<br />Value:  3.0018519<br />surf_bot: Surface","Year: 2017<br />Value:  0.4000000<br />surf_bot: Surface","Year: 2018<br />Value:  0.7000000<br />surf_bot: Surface"],"type":"scatter","mode":"lines","line":{"width":1.88976377952756,"color":"rgba(97,156,255,1)","dash":"solid"},"hoveron":"points","name":"Surface","legendgroup":"Surface","showlegend":false,"xaxis":"x2","yaxis":"y3","hoverinfo":"text","frame":null}],"layout":{"margin":{"t":37.9178082191781,"r":18.9954337899543,"b":40.1826484018265,"l":37.2602739726027},"plot_bgcolor":"rgba(235,235,235,1)","paper_bgcolor":"rgba(255,255,255,1)","font":{"color":"rgba(0,0,0,1)","family":"","size":14.6118721461187},"xaxis":{"domain":[0,0.489128071319852],"automargin":true,"type":"linear","autorange":false,"range":[2008.55,2018.45],"tickmode":"array","ticktext":["2010","2012","2014","2016","2018"],"tickvals":[2010,2012,2014,2016,2018],"categoryorder":"array","categoryarray":["2010","2012","2014","2016","2018"],"nticks":null,"ticks":"outside","tickcolor":"rgba(51,51,51,1)","ticklen":3.65296803652968,"tickwidth":0.66417600664176,"showticklabels":true,"tickfont":{"color":"rgba(77,77,77,1)","family":"","size":11.689497716895},"tickangle":-0,"showline":false,"linecolor":null,"linewidth":0,"showgrid":true,"gridcolor":"rgba(255,255,255,1)","gridwidth":0.66417600664176,"zeroline":false,"anchor":"y3","title":"","hoverformat":".2f"},"annotations":[{"text":"Year","x":0.5,"y":-0.0471841704718417,"showarrow":false,"ax":0,"ay":0,"font":{"color":"rgba(0,0,0,1)","family":"","size":14.6118721461187},"xref":"paper","yref":"paper","textangle":-0,"xanchor":"center","yanchor":"top","annotationType":"axis"},{"text":"Value","x":-0.0337029789084584,"y":0.5,"showarrow":false,"ax":0,"ay":0,"font":{"color":"rgba(0,0,0,1)","family":"","size":14.6118721461187},"xref":"paper","yref":"paper","textangle":-90,"xanchor":"right","yanchor":"center","annotationType":"axis"},{"text":"Fall","x":0.244564035659926,"y":1,"showarrow":false,"ax":0,"ay":0,"font":{"color":"rgba(26,26,26,1)","family":"","size":11.689497716895},"xref":"paper","yref":"paper","textangle":-0,"xanchor":"center","yanchor":"bottom"},{"text":"Spring","x":0.755435964340074,"y":1,"showarrow":false,"ax":0,"ay":0,"font":{"color":"rgba(26,26,26,1)","family":"","size":11.689497716895},"xref":"paper","yref":"paper","textangle":-0,"xanchor":"center","yanchor":"bottom"},{"text":"GB","x":1,"y":0.840943683409437,"showarrow":false,"ax":0,"ay":0,"font":{"color":"rgba(26,26,26,1)","family":"","size":11.689497716895},"xref":"paper","yref":"paper","textangle":90,"xanchor":"left","yanchor":"middle"},{"text":"GOM","x":1,"y":0.5,"showarrow":false,"ax":0,"ay":0,"font":{"color":"rgba(26,26,26,1)","family":"","size":11.689497716895},"xref":"paper","yref":"paper","textangle":90,"xanchor":"left","yanchor":"middle"},{"text":"SS","x":1,"y":0.159056316590563,"showarrow":false,"ax":0,"ay":0,"font":{"color":"rgba(26,26,26,1)","family":"","size":11.689497716895},"xref":"paper","yref":"paper","textangle":90,"xanchor":"left","yanchor":"middle"},{"text":"surf_bot","x":1.02,"y":1,"showarrow":false,"ax":0,"ay":0,"font":{"color":"rgba(0,0,0,1)","family":"","size":14.6118721461187},"xref":"paper","yref":"paper","textangle":-0,"xanchor":"left","yanchor":"bottom","legendTitle":true}],"yaxis":{"domain":[0.681887366818874,1],"automargin":true,"type":"linear","autorange":false,"range":[-0.7735,18.4435],"tickmode":"array","ticktext":["0","5","10","15"],"tickvals":[0,5,10,15],"categoryorder":"array","categoryarray":["0","5","10","15"],"nticks":null,"ticks":"outside","tickcolor":"rgba(51,51,51,1)","ticklen":3.65296803652968,"tickwidth":0.66417600664176,"showticklabels":true,"tickfont":{"color":"rgba(77,77,77,1)","family":"","size":11.689497716895},"tickangle":-0,"showline":false,"linecolor":null,"linewidth":0,"showgrid":true,"gridcolor":"rgba(255,255,255,1)","gridwidth":0.66417600664176,"zeroline":false,"anchor":"x","title":"","hoverformat":".2f"},"shapes":[{"type":"rect","fillcolor":null,"line":{"color":null,"width":0,"linetype":[]},"yref":"paper","xref":"paper","x0":0,"x1":0.489128071319852,"y0":0.681887366818874,"y1":1},{"type":"rect","fillcolor":"rgba(217,217,217,1)","line":{"color":"transparent","width":0.66417600664176,"linetype":"solid"},"yref":"paper","xref":"paper","x0":0,"x1":0.489128071319852,"y0":0,"y1":23.37899543379,"yanchor":1,"ysizemode":"pixel"},{"type":"rect","fillcolor":null,"line":{"color":null,"width":0,"linetype":[]},"yref":"paper","xref":"paper","x0":0.510871928680148,"x1":1,"y0":0.681887366818874,"y1":1},{"type":"rect","fillcolor":"rgba(217,217,217,1)","line":{"color":"transparent","width":0.66417600664176,"linetype":"solid"},"yref":"paper","xref":"paper","x0":0.510871928680148,"x1":1,"y0":0,"y1":23.37899543379,"yanchor":1,"ysizemode":"pixel"},{"type":"rect","fillcolor":"rgba(217,217,217,1)","line":{"color":"transparent","width":0.66417600664176,"linetype":"solid"},"yref":"paper","xref":"paper","y0":0.681887366818874,"y1":1,"x0":0,"x1":23.37899543379,"xanchor":1,"xsizemode":"pixel"},{"type":"rect","fillcolor":null,"line":{"color":null,"width":0,"linetype":[]},"yref":"paper","xref":"paper","x0":0,"x1":0.489128071319852,"y0":0.34855403348554,"y1":0.65144596651446},{"type":"rect","fillcolor":null,"line":{"color":null,"width":0,"linetype":[]},"yref":"paper","xref":"paper","x0":0.510871928680148,"x1":1,"y0":0.34855403348554,"y1":0.65144596651446},{"type":"rect","fillcolor":"rgba(217,217,217,1)","line":{"color":"transparent","width":0.66417600664176,"linetype":"solid"},"yref":"paper","xref":"paper","y0":0.34855403348554,"y1":0.65144596651446,"x0":0,"x1":23.37899543379,"xanchor":1,"xsizemode":"pixel"},{"type":"rect","fillcolor":null,"line":{"color":null,"width":0,"linetype":[]},"yref":"paper","xref":"paper","x0":0,"x1":0.489128071319852,"y0":0,"y1":0.318112633181126},{"type":"rect","fillcolor":null,"line":{"color":null,"width":0,"linetype":[]},"yref":"paper","xref":"paper","x0":0.510871928680148,"x1":1,"y0":0,"y1":0.318112633181126},{"type":"rect","fillcolor":"rgba(217,217,217,1)","line":{"color":"transparent","width":0.66417600664176,"linetype":"solid"},"yref":"paper","xref":"paper","y0":0,"y1":0.318112633181126,"x0":0,"x1":23.37899543379,"xanchor":1,"xsizemode":"pixel"}],"xaxis2":{"type":"linear","autorange":false,"range":[2008.55,2018.45],"tickmode":"array","ticktext":["2010","2012","2014","2016","2018"],"tickvals":[2010,2012,2014,2016,2018],"categoryorder":"array","categoryarray":["2010","2012","2014","2016","2018"],"nticks":null,"ticks":"outside","tickcolor":"rgba(51,51,51,1)","ticklen":3.65296803652968,"tickwidth":0.66417600664176,"showticklabels":true,"tickfont":{"color":"rgba(77,77,77,1)","family":"","size":11.689497716895},"tickangle":-0,"showline":false,"linecolor":null,"linewidth":0,"showgrid":true,"domain":[0.510871928680148,1],"gridcolor":"rgba(255,255,255,1)","gridwidth":0.66417600664176,"zeroline":false,"anchor":"y3","title":"","hoverformat":".2f"},"yaxis2":{"type":"linear","autorange":false,"range":[-0.7735,18.4435],"tickmode":"array","ticktext":["0","5","10","15"],"tickvals":[0,5,10,15],"categoryorder":"array","categoryarray":["0","5","10","15"],"nticks":null,"ticks":"outside","tickcolor":"rgba(51,51,51,1)","ticklen":3.65296803652968,"tickwidth":0.66417600664176,"showticklabels":true,"tickfont":{"color":"rgba(77,77,77,1)","family":"","size":11.689497716895},"tickangle":-0,"showline":false,"linecolor":null,"linewidth":0,"showgrid":true,"domain":[0.34855403348554,0.65144596651446],"gridcolor":"rgba(255,255,255,1)","gridwidth":0.66417600664176,"zeroline":false,"anchor":"x","title":"","hoverformat":".2f"},"yaxis3":{"type":"linear","autorange":false,"range":[-0.7735,18.4435],"tickmode":"array","ticktext":["0","5","10","15"],"tickvals":[0,5,10,15],"categoryorder":"array","categoryarray":["0","5","10","15"],"nticks":null,"ticks":"outside","tickcolor":"rgba(51,51,51,1)","ticklen":3.65296803652968,"tickwidth":0.66417600664176,"showticklabels":true,"tickfont":{"color":"rgba(77,77,77,1)","family":"","size":11.689497716895},"tickangle":-0,"showline":false,"linecolor":null,"linewidth":0,"showgrid":true,"domain":[0,0.318112633181126],"gridcolor":"rgba(255,255,255,1)","gridwidth":0.66417600664176,"zeroline":false,"anchor":"x","title":"","hoverformat":".2f"},"showlegend":true,"legend":{"bgcolor":"rgba(255,255,255,1)","bordercolor":"transparent","borderwidth":1.88976377952756,"font":{"color":"rgba(0,0,0,1)","family":"","size":11.689497716895},"y":-0.1,"orientation":"h"},"hovermode":"closest","barmode":"relative"},"config":{"doubleClick":"reset","showSendToCloud":false},"source":"A","attrs":{"b9d16a6e92ed":{"x":{},"y":{},"colour":{},"type":"scatter"}},"cur_data":"b9d16a6e92ed","visdat":{"b9d16a6e92ed":["function (y) ","x"]},"highlight":{"on":"plotly_click","persistent":false,"dynamic":false,"selectize":false,"opacityDim":0.2,"selected":{"opacity":1},"debounce":0},"shinyEvents":["plotly_hover","plotly_click","plotly_selected","plotly_relayout","plotly_brushed","plotly_brushing","plotly_clickannotation","plotly_doubleclick","plotly_deselect","plotly_afterplot"],"base_url":"https://plot.ly"},"evals":[],"jsHooks":[]}</script>
+</div>
+<div id="dt" class="section level3">
+<h3><span class="header-section-number">0.4.3</span> DT</h3>
+<p><a href="https://rstudio.github.io/DT/">DT</a> is another HTML widget that interfaces with the JS DataTables library.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(DT)
+<span class="kw">datatable</span>(vars)</code></pre></div>
+<div id="htmlwidget-7bc4f1689e6b5e04889f" style="width:100%;height:auto;" class="datatables html-widget"></div>
+<script type="application/json" data-for="htmlwidget-7bc4f1689e6b5e04889f">{"x":{"filter":"none","data":[["1","2","3","4","5","6","7","8","9","10","11","12","13","14","15","16","17","18","19","20","21"],["Cruise identifier","Cruise identifier","Station number","CTD cast number","Sample bottle number","Sample date","Sample time","Latitude","Longitude","Depth of station","Depth of sample","Water pressure","Water temperature","Water salinity","Potential density at surface pressure","Dissolved oxygen","Silicic acid concentration","Total nitrate and nitrite concentration","Ammonia concentration","Phosphate concentration","Dissolved oxygen"],["EXPOCODE","Cruise_ID","STNNBR","CASTNO","BTLNBR","Date_UTC","Time_UTC","Latitude","Longitude","Depth_station","Depth_sampling","CTDPRS","CTDTEMP","CTDSAL","Sigma.Theta","CTDOXY","SILCAT","NITRIT+NITRAT","AMMMONIA","PHSPHT","CTDOXYMOL"],["","","","","","MM/DD/YYYY","hh:mm","decimal degrees","decimal degrees","m","m","decibars","°C","PSS-78","kg m^-3^","mg L^-1^","$\\mu$M","$\\mu$M","$\\mu$M","$\\mu$M","$\\mu$mol kg^-1^"]],"container":"<table class=\"display\">\n  <thead>\n    <tr>\n      <th> <\/th>\n      <th>Variable<\/th>\n      <th>Names<\/th>\n      <th>Units<\/th>\n    <\/tr>\n  <\/thead>\n<\/table>","options":{"order":[],"autoWidth":false,"orderClasses":false,"columnDefs":[{"orderable":false,"targets":0}]}},"evals":[],"jsHooks":[]}</script>
+</div>
+</div>
+<div id="tabbed-output" class="section level2 tabset tabset-fade tabset-pills">
+<h2><span class="header-section-number">0.5</span> Tabbed output</h2>
+<p>Tabbed outputs can be added to save vertical space</p>
+<div id="the-code" class="section level3">
+<h3><span class="header-section-number">0.5.1</span> The Code</h3>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">cars_plot &lt;-<span class="st"> </span><span class="kw">ggplot</span>(<span class="dt">data =</span> mtcars) <span class="op">+</span>
+<span class="st">  </span><span class="kw">geom_point</span>(<span class="kw">aes</span>(<span class="dt">x =</span> wt, <span class="dt">y =</span> mpg)) <span class="op">+</span>
+<span class="st">  </span><span class="kw">ggtitle</span>(<span class="st">&quot;A plot&quot;</span>)</code></pre></div>
+</div>
+<div id="the-figure" class="section level3">
+<h3><span class="header-section-number">0.5.2</span> The Figure</h3>
+<p><img src="example_book_files/figure-html/unnamed-chunk-6-1.png" width="672" style="display: block; margin: auto;" /></p>
+</div>
+</div>
+            </section>
+
+          </div>
+        </div>
+      </div>
+
+
+    </div>
+  </div>
+<script src="book_assets/gitbook-2.6.7/js/app.min.js"></script>
+<script src="book_assets/gitbook-2.6.7/js/lunr.js"></script>
+<script src="book_assets/gitbook-2.6.7/js/plugin-search.js"></script>
+<script src="book_assets/gitbook-2.6.7/js/plugin-sharing.js"></script>
+<script src="book_assets/gitbook-2.6.7/js/plugin-fontsettings.js"></script>
+<script src="book_assets/gitbook-2.6.7/js/plugin-bookdown.js"></script>
+<script src="book_assets/gitbook-2.6.7/js/jquery.highlight.js"></script>
+<script>
+gitbook.require(["gitbook"], function(gitbook) {
+gitbook.start({
+"sharing": {
+"github": false,
+"facebook": true,
+"twitter": true,
+"google": false,
+"linkedin": false,
+"weibo": false,
+"instapaper": false,
+"vk": false,
+"all": ["facebook", "google", "twitter", "linkedin", "weibo", "instapaper"]
+},
+"fontsettings": {
+"theme": "white",
+"family": "sans",
+"size": 2
+},
+"edit": {
+"link": null,
+"text": null
+},
+"history": {
+"link": null,
+"text": null
+},
+"download": null,
+"toc": {
+"collapse": true
+},
+"search": false
+});
+});
+</script>
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    var src = "";
+    if (src === "" || src === "true") src = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-MML-AM_CHTML";
+    if (location.protocol !== "file:" && /^https?:/.test(src))
+      src = src.replace(/^https?:/, '');
+    script.src = src;
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+</body>
+
+</html>
