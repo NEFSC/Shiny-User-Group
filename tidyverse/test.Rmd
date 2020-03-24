@@ -1,0 +1,61 @@
+---
+title: "tidyverse examples"
+date: "3/24/2020"
+output: html_document
+---
+
+Manipulate seabird data set using any tidyverse packages/functions.
+
+ - [magrittr](https://www.rdocumentation.org/packages/magrittr/versions/1.0.0/topics/%25%3E%25)
+ - [dplyr](https://www.rdocumentation.org/packages/dplyr/versions/0.7.8)
+ - [tidyr](https://tidyr.tidyverse.org/)
+
+**1)** read in relevent packages, set up relative directory, read in csv
+```{r, echo = T, eval = T, message=FALSE, warning=FALSE}
+library(magrittr)
+library(tidyr)
+library(dplyr)
+
+raw.dir <- here::here("tidyverse")
+seabird<- read.csv(file.path(raw.dir,"Audubon_Common_Tern.csv"))
+head(seabird)
+```
+
+**2)** group_by() island and get productivity mean for each island
+```{r, echo = T, eval = T, message=FALSE, warning=FALSE}
+test.1<- seabird %>% 
+  group_by(Island) %>% 
+  summarise(mean =  mean(Productivity, na.rm = TRUE))
+
+head(test.1)
+
+```
+
+**3)** filter for your fav island and then get the mean of that island's productivity
+```{r, echo = T, eval = T, message=FALSE, warning=FALSE}
+test.2<- seabird %>% 
+  filter(Island == "EER") %>% 
+  summarise(mean =  mean(Productivity, na.rm = TRUE))
+head(test.2)
+
+```
+
+**4)** select relevent columns, mutate() = create new columns populated by the mean and SD productivity of each island
+```{r, echo = T, eval = T, message=FALSE}
+test.3<- seabird %>% 
+  group_by(Island) %>% 
+  mutate(mean = mean(Productivity, na.rm = TRUE),
+         SD = sd(Productivity, na.rm = TRUE)) %>% 
+  select(Island, Species, Productivity, mean, SD)
+head(test.3)
+```
+
+**5)** pivot_longer = convert dataset to long format and filter out only diet species of interest 
+```{r, echo = T, eval = T, message=FALSE, warning=FALSE}
+test.4<- seabird %>% 
+   tidyr::pivot_longer(cols = Productivity:Mackerel, names_to = "Var", values_to = "Value") %>% 
+  filter(Var == c("Hake", "Pollock"))
+
+head(test.4)
+```
+
