@@ -3,6 +3,14 @@
 test repo for sharing code and tutorials of topics discussed in the shiny meetings.
 
 
+## Contact (in alphabetical order)
+
+| [andybeet](https://github.com/andybeet)                                      | [kimberly-bastille](https://github.com/kimberly-bastille)                                                                                                    |
+|-------------------------------------------------------------------------------------------------|----------------------------------------------------------------------------------------------------------------------------------------|
+| [![](https://avatars1.githubusercontent.com/u/22455149?s=100&v=4)](https://github.com/andybeet) | [![](https://avatars.githubusercontent.com/u/39955661?v=4)](https://github.com/kimberly-bastille) |
+
+
+
 #### Legal disclaimer
 
 *This repository is a scientific product and is not official
