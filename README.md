@@ -5,9 +5,9 @@ test repo for sharing code and tutorials of topics discussed in the shiny meetin
 
 ## Contact (in alphabetical order)
 
-|  [kimberly-bastille](https://github.com/kimberly-bastille)                                              |[andybeet](https://github.com/andybeet)                                      |
-|-------------------------------------------------------------------------------------------------|----------------------------------------------------------------------------------------------------------------------------------------|
-|[![](https://avatars.githubusercontent.com/u/39955661?s=100&v=4)](https://github.com/kimberly-bastille) | [![](https://avatars1.githubusercontent.com/u/22455149?s=100&v=4)](https://github.com/andybeet)  |
+|  [kimberly-bastille](https://github.com/kimberly-bastille)                                              |[andybeet](https://github.com/andybeet)                                      |[ejosephson](https://github.com/ejosephson)                                      |
+|-------------------------------------------------------------------------------------------------|----------------------------------------------------------------------------------------------------------------------------------------|----------------------------------------------------------------------------------------------------------------------------------------|
+|[![](https://avatars.githubusercontent.com/u/39955661?s=100&v=4)](https://github.com/kimberly-bastille) | [![](https://avatars1.githubusercontent.com/u/22455149?s=100&v=4)](https://github.com/andybeet)  |[![](https://avatars.githubusercontent.com/u/77019097?s=100&v=4)](https://github.com/ejosephson) |   |
 
 
 
