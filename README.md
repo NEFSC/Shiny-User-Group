@@ -7,7 +7,7 @@ test repo for sharing code and tutorials of topics discussed in the shiny meetin
 
 | [kimberly-bastille](https://github.com/kimberly-bastille) | [andybeet](https://github.com/andybeet) | [jmhatch](https://github.com/jmhatch) | [ejosephson](https://github.com/ejosephson) | [alomiller](https://github.com/alomiller) | [atyrell3](https://github.com/atyrell3) |
 |---|---|---|---|---|---|
-<img src = "https://avatars.githubusercontent.com/u/39955661?s=100&v=4" style="width:80px;"/> | <img src = "https://avatars1.githubusercontent.com/u/22455149?s=100&v=4)" style="width:80px;"/> | <img src = "https://avatars.githubusercontent.com/u/35869229?s=100&v=4" style="width:80px;"/> | <img src = "https://avatars.githubusercontent.com/u/77019097?s=100&v=4" style="width:80px;"/> | <img src = "https://avatars.githubusercontent.com/u/11235095?s=100&v=4" style="width:80px;"/> | <img src = "https://avatars.githubusercontent.com/u/77738923?s=100&v=4" style="width:80px;"/> ||
+<img src = "https://avatars.githubusercontent.com/u/39955661?s=100&v=4" style="width:80px;"/> | <img src = "https://avatars1.githubusercontent.com/u/22455149?s=100&v=4" style="width:80px;"/> | <img src = "https://avatars.githubusercontent.com/u/35869229?s=100&v=4" style="width:80px;"/> | <img src = "https://avatars.githubusercontent.com/u/77019097?s=100&v=4" style="width:80px;"/> | <img src = "https://avatars.githubusercontent.com/u/11235095?s=100&v=4" style="width:80px;"/> | <img src = "https://avatars.githubusercontent.com/u/77738923?s=100&v=4" style="width:80px;"/> ||
 
 
 
