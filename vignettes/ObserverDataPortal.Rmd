@@ -1,0 +1,45 @@
+## Observer Data Spatial Portal
+
+**Apps Name**: [Observer Data Spatial Portal](http://shiny1.nefsc.noaa.gov:3838/amiller/ObserverMap/)
+
+**Developer(s)**: Alicia Miller
+  
+**Point of contact**: Alicia Miller, <alicia.miller@noaa.gov> (Population Dynamics Branch/Protected Species Branch)
+  
+**Keywords**: commercial fisheries data, stock assessment, fisheries observer data
+
+**Key Packages**: rodbc, rgdal, pbsmapping, sp
+
+### Application Purpose
+
+The Northeast Fisheries Observer Program collects data from commercial fishing vessels and processors both on-board the vessel and dockside. Observers collect information on catch and bycatch composition, protected species interactions, and gear configurations. Observer data directly inform stock assessments which monitor the exploitation rate of fisheries. Stock assessments use observer data to estimate discards/bycatch and ,if dockside monitoring is limited, the size and age composition of landings. In addition to monitoring discard amounts, observer data can provide a more detailed look at fishing behavior. 
+This app was developed to explore the spatial and temporal aspects of existing observer data and provide an efficient tool for stock assessment. It gives analysts and reviewers the opportunity to efficiently query and visualize observer data throughout the assessment process. The user can subset the data by catch type, species, gear type, and by month(s) and year(s). The option to overlay fall and/or spring NEFSC Bottom Trawl Survey catches is also available. Users can adjust the catch size bins in the legend and download all data into a csv file or save the currently displayed map as an image.
+
+#### User Specifications
+
+The user populates the widgets in the interface on the left side of the page (catch type, species, gear type, range of years and months, catch bin sizes, and option to overlay spring or fall survey data) and then clicks the **RUN** button to begin the query. A status bar showing progress then appears in the bottom right corner of the page until the process is complete and the map in the main panel refreshes.  
+
+```{r, echo=FALSE}
+image.dir <- "images/"
+knitr::include_graphics(file.path(image.dir,"ObserverMain.png"))
+```
+
+#### App Results
+
+Once the query has finished executing, a map displaying catches in ten minute spatial squares appears in the **Map** tab. This map can be saved as a png file by clicking the **Download Map** button on the left panel below the **RUN** button.
+
+```{r, echo=FALSE}
+knitr::include_graphics(file.path(image.dir,"ObserverMapOutput.png"))
+```
+
+A second tab, **Table** shows the raw observed catch data used in the map summary. It is important to note that this data does not meet the confidentiality requirements and should not be displayed in a public setting, but is more for the analyst use. This data table can be downloaded using the **Download Data** button on the left panel below the **RUN** button. The user has the option to also view and download data where position information is not available and therefore not displayed in the map.
+
+A brief summary of the data is also displayed at the bottom of the left panel including the total number of observed catch records and a histogram of the number of records per year.
+
+```{r, echo=FALSE}
+knitr::include_graphics(file.path(image.dir,"ObserverMain2.png"))
+```
+
+### How often is it used? 
+
+The Observer Data Spatial Portal is generally used anytime a stock assessment analyst is looking for information about spatial and temporal trends in commercial fishing. It may also be used during stock assessment review meetings to help answer questions or by the working group throughout the stock assessment process to help understand where observer coverage exists and the spatial extent of a fishing fleet throughout the year. 

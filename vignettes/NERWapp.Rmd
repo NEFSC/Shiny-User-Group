@@ -1,0 +1,54 @@
+## Northeast Right Whale Shiny Apps
+
+**Apps Name**: [Northeast Right Whale Shiny Apps](http://shiny1.nefsc.noaa.gov:3838/lcrowe/narwss_rwsas_apps/)
+
+**Developer(s)**: Leah Crowe
+  
+**Point of contact**: Leah Crowe, <leah.crowe@noaa.gov> (Protected Species Branch)
+  
+**Keywords**: Survey data, sightings, trigger analysis, pdf, report
+
+**Key Packages**: leaflet, leaflet.esri, igraph, rgdal, rhandsontable, rmarkdown, rodbc, tinytex, webshot
+
+**GitHub**: [leahcrowe/narwss_rwsas_apps](https://github.com/leahcrowe/narwss_rwsas_apps)
+
+### Application Purpose
+
+#### Aerial Survey Processing App 
+
+This app aids the user in processing aerial survey data and generating a report pdf that is then emailed to stakeholders. Any right whale sightings are then intergrated into the [Right Whale Sightings Advisory System](https://apps-nefsc.fisheries.noaa.gov/psb/surveys/MapperiframeWithText.html) and the "Trigger Analysis" app (below) is used to evaluate for potential dynamic protection zones.
+
+```{r, echo=FALSE}
+image.dir <- "images/"
+knitr::include_graphics(file.path(image.dir,"NERWapp.AerialSurvey.png"))
+```
+
+#### Trigger Analysis
+
+This app is used to evaluate if visual sightings or acoustic detections trigger dynamic management areas (aka right whale SLOW zones), and then it calculates the boundaries. A report and letter are generated here that detail the area where vessels should reduce their speeds, and these products are then emailed to GARFO to initiate the request. A kml is also generated which is used to display the zone on the [Right Whale Sightings Advisory System](https://apps-nefsc.fisheries.noaa.gov/psb/surveys/MapperiframeWithText.html) interactive map.   
+
+
+
+```{r, echo=FALSE}
+knitr::include_graphics(file.path(image.dir,"NERWapp.TriggerAnalysis.png"))
+```
+
+#### Photo Position Finder
+
+This app will finalize the photo submission spreadsheet NEFSC submits to the North Atlantic Right whale Consortium by gathering latitude and longitude from the .gps files for the date and time specified. From this position, “Area” will be determined and other details are auto-filled.
+
+```{r, echo=FALSE}
+knitr::include_graphics(file.path(image.dir,"NERWapp.PhotoPosition.png"))
+```
+
+### How often is it used? 
+
+The Aerial Survey Processing App is used after every right whale aerial survey -- for example, in 2019, NEFSC surveyed for right whales on 92 different days, so this is a frequently used tool. 
+
+The Trigger Analysis App is used each time a right whale sighting is reported to the Right Whale Sighting Advisory System to evaluate for a dynamic protection zone. In 2019, Dynamic Management Areas were initiated or extended 29 times, but the app was used more than this to evaluate sightings that also did not trigger these zones. 
+
+The Photo Position Finder App is generally used 2–3 times a year when we organize our photo data for submission.  
+
+### Has it been used in management?
+
+This app is used to inform and request management decisions and is an integral part of the [Right Whale SLOW zone](https://www.fisheries.noaa.gov/feature-story/help-endangered-whales-slow-down-slow-zones) program. 

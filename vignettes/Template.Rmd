@@ -1,0 +1,28 @@
+# Template
+
+**Apps Name**: [app](link to app)
+
+**Developer(s)**: Developer Name
+  
+**Point of contact**: Developer Name, <developer.name@noaa.gov> (BRANCH NAME)
+  
+**Keywords**: Keyword 1, Keyword 2, Keyword 3
+
+**Key Packages**: list of important/unique packages used
+
+**GitHub**: [link to app dev code](link to app dev code)
+
+## Application Purpose
+
+Description of app.
+
+```{r, echo=FALSE}
+image.dir <- "images/"
+knitr::include_graphics(file.path(image.dir,"example.png"))
+```
+
+
+## How often is it used? 
+
+## Has it been used in management?
+

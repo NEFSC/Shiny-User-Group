@@ -1,0 +1,48 @@
+## North Atlantic Right Whale Decision Support Tool App
+
+**Apps Name**: [North Atlantic Right Whale Decision Support Tool App](http://shiny1.nefsc.noaa.gov:3838/amiller/DST/)
+
+**Developer(s)**: Alicia Miller, Sean Hardison, Andy Beet, Scott Large, Burton Shank, Marisa Trego, Alessandra Huamani, André Price, Michael Asaro, Colleen Coogan, Sean Hayes
+  
+**Point of contact**: Alicia Miller, <alicia.miller@noaa.gov> (Population Dynamics Branch/Protected Species Branch)
+  
+**Keywords**: fisheries management, risk analysis, protected species
+
+**Key Packages**: rgdal, leaflet, rhandsontable, rmarkdown 
+
+**GitHub**: [ALoMiller/DecisionSupportToolApp](https://github.com/ALoMiller/DecisionSupportToolApp)
+
+### Application Purpose
+
+The North Atlantic Right Whale Decision Support Tool App was built to assist managers, decision makers, and stakeholders with visualizing and understanding spatiotemporal overlap between fixed fishing gear (traps, pots, gillnets, and aquaculture) and large whale distributions in the US, particularly the North Atlantic Right Whale (NARW). The model calculates how risk of entanglement to NARW may change as a result of changes to the spatial distribution and configuration of fishing gear. Within the model, risk posed to a whale species is calculated as the product of: (1) the density of fishing gear at a given location, (2) the threat the gear poses to the whale population while taking into account various gear configurations, dimensions, and entanglement reduction measures, and (3) the density of whales expected in the given location. The result is a relative risk “score” for given scenarios of when, where, and how fishing occurs. 
+The Decision Support Tool (DST) was developed as a function to be run in the R statistical software. In order to make the tool more accessible to a broader audience, a Shiny app was created with the intention of it eventually being hosted on a public facing server. This would allow users to access the DST through a website and be able to run potential management scenarios with the more user-friendly form of a graphical user interface. 
+
+#### User Specifications
+
+Under the **Specify Model** dashboard menu, users can choose to open or modify an existing scenario (this specifies gear restrictions, spatial extents/restrictions, and management actions) from the dropdown OR create a new scenario by adding actions to the interactive spreadsheet. Next, the type of fishery and whale species are specified using the dropdown widgets and a new name applied to your scenario run should be entered. Other model specifics can also be turned on or off and then a click of the **Run Model** button executes the model. Model status updates and warnings will print below the input spreadsheet until completion.
+
+```{r, echo=FALSE}
+knitr::include_graphics(file.path("images/DSTInputs.png"))
+```
+
+An RMarkdown file was created with detailed instructions and more information on how to use the app under the **Additional Info** tab. To visualize management areas when creating a scenario, users can click on the **Visualize Areas** tab in the dashboard menu to open an interactive Leaflet map.
+
+```{r, echo=FALSE}
+knitr::include_graphics(file.path("images/DSTLeafletMap.png"))
+```
+
+#### App Results
+
+Once the model finishes running, users can click on the **View Result Tables & Figures** tab to view results. If more than one scenario has been run during the session, a **Choose Scenario** dropdown widget makes it possible to switch between model results. The viewer allows users to zoom on figures and download and print results. 
+
+```{r, echo=FALSE}
+knitr::include_graphics(file.path("images/DSTOutputPlot2.png"))
+```
+
+### How often is it used? 
+
+The DST was created in response to a request from the Atlantic Large Whale Take Reduction Team (TRT) for a decision-making tool to aid them in risk reduction under various fishing scenarios. The TRT is made up of scientists, members of fishing industry, state and federal managers, and conservationists that utilize the tool regularly to understand the impacts of fishing gear and work together to mitigate risks of entanglement on large whales. This app allows all TRT members to run scenarios without the complexity of modeling software and skills.
+
+### Has it been used in management?
+
+While designed to aid in rule-making, the DST is not dispositive for management decisions. It has been a tool used along with other analytical methods and published research leading to management decisions aimed at reaching a goal of 60 percent entanglement risk reduction. 

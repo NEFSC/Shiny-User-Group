@@ -1,0 +1,30 @@
+## Limiter
+
+**Apps Name**: [limiter](http://shiny1.nefsc.noaa.gov:3838/clegault/limiter/)
+
+**Developer(s)**: Chris Legault
+  
+**Point of contact**: Chris Legault, <chris.legault@noaa.gov> (Population Dynamics Branch)
+  
+**Keywords**: survey, quota, TRAC (Transboundary Resources Assessment Committee)
+
+**Key Packages**: dplyr, ggplot2, gridExtra (would prefer to use cowplot)
+
+**GitHub**: [limiter-app](https://github.com/cmlegault/limiter)
+
+### Application Purpose
+
+This app was presented at the 2020 meeting of the Transboundary Resources Assessment Committee (TRAC) as a means of setting a constant quota for Georges Bank yellowtail flounder, as long as the survey biomass remains within specified bounds. The app allows the user to change the bounds and the quota to see how likely recent years would be to fall outside the bounds. The TRAC recommended its use in the future to provide catch advice to the Transboundary Management Guidance Committee, the US-Canada joint management body for this stock. 
+
+```{r, echo=FALSE}
+knitr::include_graphics(file.path("images/limiter.png"))
+```
+
+
+### How often is it used? 
+
+The app on the Shiny server has not been used due to the firewall limitations. The app has been demonstrated to the TMGC and the New England Fishery Management Council's (MEFMC) Scientific and Statistical Committee (SSC). Both groups encouraged further developement of the app.
+
+### Has it been used in management?
+
+Not yet, but the TMGC and SSC both encouraged continued developement of the app for use in management. However, the limitations of the current shiny1 server to only users who can get behind the firewall makes this recommendation challenging. Currently, managers who wish to use this app must download the software from the GitHub site and run it locally. Creating a fully open shiny server would increase the utility and ease of use of this app by managers.

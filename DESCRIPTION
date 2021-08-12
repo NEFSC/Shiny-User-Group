@@ -1,0 +1,18 @@
+Package: NEFSC.ShinyGroup
+Title: Shiny-User-Group
+Description: NEFSC shiny user group landing page
+Version: 0.0.1
+License: file LICENSE
+Authors@R: c(person("Abigail", "Tyrell", email = "abigail.tyrell@noaa.gov", role = c("aut", "cre"),
+           comment = c(ORCID = "0000-0002-6656-8470")),
+	     person("Kim", "Bastille", email = "kimberly.bastille@noaa.gov", role = "aut"),
+             person("Andy", "Beet", email = "andrew.beet@noaa.gov", role = "aut"),
+             person("Josh", "Hatch", email = "joshua.hatch@noaa.gov", role = "aut"),
+             person("Beth", "Josephson", email = "elizabeth.josephson@noaa.gov", role = "aut"),
+             person("Alicia", "Miller", email = "alicia.miller@noaa.gov", role = "aut"))
+Maintainer: Abigail Tyrell <abigail.tyrell@noaa.gov>
+URL: https://nefsc.github.io/Shiny-User-Group/
+BugReports: https://github.com/NEFSC/Shiny-User-Group/issues
+Imports:
+  bookdown, 
+  rmarkdown

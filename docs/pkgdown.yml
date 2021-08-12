@@ -1,0 +1,24 @@
+pandoc: '2.12'
+pkgdown: 1.6.1
+pkgdown_sha: ~
+articles:
+  authenticate: authenticate.html
+  BioSamplingApp: BioSamplingApp.html
+  DSTApp: DSTApp.html
+  limiter: limiter.html
+  NEespShiny: NEespShiny.html
+  NERWapp: NERWapp.html
+  ObserverDataPortal: ObserverDataPortal.html
+  R3: R3.html
+  SAGA: SAGA.html
+  scorer: scorer.html
+  shiny-index: shiny-index.html
+  shiny_group: shiny_group.html
+  soetrends: soetrends.html
+  Template: Template.html
+  Useful_Resources: Useful_Resources.html
+last_built: 2021-08-12T13:32Z
+urls:
+  reference: https://nefsc.github.io/Shiny-User-Group//reference
+  article: https://nefsc.github.io/Shiny-User-Group//articles
+

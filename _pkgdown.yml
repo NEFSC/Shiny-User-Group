@@ -1,0 +1,79 @@
+url: https://nefsc.github.io/Shiny-User-Group/
+
+news:
+  one_page: true
+
+authors:
+  Kim Bastille:
+    href: https://github.com/kimberly-bastille
+  Andy Beet:
+    href: https://github.com/andybeet
+  Josh Hatch:
+    href: https://github.com/jmhatch
+  Beth Josephson:
+    href: https://github.com/ejosephson
+  Alicia Miller:
+    href: https://github.com/alomiller
+  Abigail Tyrell:
+    href: https://github.com/atyrell3
+   
+navbar:
+  left:
+    - text: "About"
+      menu:
+      -  text: "Members"
+         href: articles/shiny_group.html
+    - text: "Meeting Notes"
+      menu:
+      -  text: "Placeholder"
+         href: articles/Template.html
+    - text: "The Shiny Book"
+      menu:
+      -  text: "About the Shiny Book"
+         href: articles/shiny-index.html
+      -  text: "Authentication App"
+         href: articles/authenticate.html
+      -  text: "New England Right Whale App"
+         href: articles/NERWapp.html
+      -  text: "Biosampling App"
+         href: articles/BioSamplingApp.html
+      -  text: "Observer Data Portal App"
+         href: articles/ObserverDataPortal.html
+      -  text: "SAGA App"
+         href: articles/SAGA.html
+      -  text: "Decision Support Tool App"
+         href: articles/DSTApp.html
+      -  text: "R3 App"
+         href: articles/R3.html
+      -  text: "Scorer App"
+         href: articles/scorer.html
+      -  text: "Limiter App"
+         href: articles/limiter.html
+      -  text: "SOE Trends App"
+         href: articles/soetrends.html
+      -  text: "NEespShiny App"
+         href: articles/NEespShiny.html
+    - text: "R Support"
+      menu:
+      -  text: "Useful Resources"
+         href: articles/Useful_Resources.html
+
+    - text: "News"
+      href: news/index.html
+
+  right:
+    - icon: fas fa-paper-plane fa-lg
+      href: mailto:abigail.tyrell@noaa.gov
+    - icon: fas fa-question-circle fa-lg
+      href: https://github.com/NEFSC/Shiny-User-Group/issues/
+    - icon: fab fa-github fa-lg
+      href: https://github.com/NEFSC/Shiny-User-Group
+    - icon: fa-fish
+      href: https://nmfs-general-modeling-tools.github.io/
+
+articles:
+    toc:
+      depth: 3
+
+template:
+  package: preferably

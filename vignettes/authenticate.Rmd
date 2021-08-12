@@ -1,0 +1,26 @@
+## Authentication
+
+**App name**: [authenticate](http://shiny1.nefsc.noaa.gov:3838/abeet/authenticate/)
+
+**Developer(s)**: Andy Beet
+  
+**Point of contact**: Andy Beet, <andrew.beet@noaa.gov>, (EDAB)
+  
+**Keywords**: credentials, authentication, password, database
+
+**Key Packages**: DBI/odbc
+
+**GitHub**: [https://github.com/NOAA-EDAB/authenticate](https://github.com/NOAA-EDAB/authenticate)
+
+### Application Purpose
+
+A simple front end to authenticate a user. Authentication is based on database access credentials. If another app requires access to an internal database this front end can be included in the app to add a layer of authentication.
+
+```{r, echo=FALSE}
+knitr::include_graphics(file.path("images/authenticate.png"))
+```
+
+### Uses
+
+Not presently incorporated into any other app. However several other apps currently in development may benefit from its use.
+

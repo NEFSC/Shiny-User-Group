@@ -1,0 +1,32 @@
+## Scorer
+
+**Apps Name**: [scorer](http://shiny1.nefsc.noaa.gov:3838/clegault/scorer/)
+
+**Developer(s)**: Chris Legault
+  
+**Point of contact**: Chris Legault, <chris.legault@noaa.gov> (Population Dynamics Branch)
+  
+**Keywords**: simulation, IBMWG, scoring
+
+**Key Packages**: tidyverse
+
+**GitHub**: [scorer_app](https://github.com/cmlegault/IBMWG/tree/master/demonstrations/chris/scorer_app)
+
+### Application Purpose
+
+The Index Based Methods Working Group (IBMWG) generated about 300 GB of simulation results comparing 14 approaches to providing catch advice across a range of situations. There were 50 performance metrics computed from each of 1,000 simulations across the methods and scenarios. Exploration of this large amount of information was facilitated by the use of the scorer app to compute the rank or residual score for any combination of metrics from the base, no retrospective, or statistical catch at age sets of analyses. This app was recommended for use by the peer review panel that met Dec 7-11, 2020.
+
+
+```{r, echo=FALSE}
+image.dir <- "images/"
+knitr::include_graphics(file.path(image.dir,"scorer.png"))
+```
+
+
+### How often is it used? 
+
+The scorer app was used extensively by the IBMWG to explore performance of the different index based methods across the range of scenarios. This work continues and it is expected that these results will continue to provide useful information ragarding situations that are or are not well suited for specific index based methods. Further develop of the app was recommended during the peer review to address the issue of "bigger is better" across all metrics. 
+
+### Has it been used in management?
+
+The app was recommended for use as a communication tool with managers. However, the limitations of the current shiny1 server to only users who can get behind the firewall makes this recommendation challenging. Currently, managers who wish to use this app must download the software from the GitHub site and run it locally. Creating a fully open shiny server would increase the utility and ease of use of this app by managers.

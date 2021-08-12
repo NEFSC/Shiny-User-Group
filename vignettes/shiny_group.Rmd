@@ -1,0 +1,14 @@
+# The Shiny Group {#group}
+
+|   Member   | Branch  | email | github username |
+|------------|---------|-------|-----------------|
+| Kim Bastille | EDAB | kimberly.bastille@noaa.gov | kimberly-bastille |
+| Andy Beet | EDAB | andrew.beet@noaa.gov | andybeet |
+| Leah Crowe | PSB | leah.crowe@noaa.gov | leahcrowe |
+| Josh Hatch | PSB | joshua.hatch@noaa.gov | jmhatch |
+| Beth Josephson | PSB | elizabeth.josephson@noaa.gov | bethjosephson |
+| Alicia Miller | PDB/PSB | alicia.miller@noaa.gov | alomiller |
+| Abby Tyrell | EDAB | abigail.tyrell@noaa.gov | atyrell3 |
+
+
+
