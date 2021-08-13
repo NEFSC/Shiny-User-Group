@@ -68,8 +68,8 @@ navbar:
       href: https://github.com/NEFSC/Shiny-User-Group/issues/
     - icon: fab fa-github fa-lg
       href: https://github.com/NEFSC/Shiny-User-Group
-    - icon: fa-fish
-      href: https://nmfs-general-modeling-tools.github.io/
+#    - icon: fa-fish
+#      href: https://nmfs-general-modeling-tools.github.io/
 
 articles:
     toc:
