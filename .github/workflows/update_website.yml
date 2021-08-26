@@ -1,0 +1,75 @@
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: "0 0 * * 1"
+
+name: Update website
+
+jobs: 
+  build1:
+    runs-on: ubuntu-latest
+    env:
+      GITHUB_PAT: ${{ secrets.GH_PAT }}
+      R_REMOTES_NO_ERRORS_FROM_WARNINGS: true
+    
+    steps:
+      - name: Install Pandoc
+        run: brew install pandoc
+        shell: bash
+
+      - name: Install command line packages
+        run: |        
+          sudo apt update
+          sudo apt-get install  libgdal-dev libcurl4-gnutls-dev libgit2-dev libudunits2-dev libharfbuzz-dev libfribidi-dev
+        shell: bash
+        
+      - name: Set up R
+        uses: r-lib/actions/setup-r@master
+        with: 
+          r-version: '4.0.3' # problem with using 4.0.4    
+
+      - name: Load R packages
+        run: |
+          sudo R CMD javareconf
+          Rscript -e 'install.packages(c("pkgdown", "stringi", "car", "devtools", "bookdown", "rmarkdown"), 
+            dependencies = TRUE)
+          devtools::install_github("amirmasoudabdol/preferably", upgrade = "never")'
+
+      - name: Checkout NEFSC-shiny-book
+        uses: actions/checkout@v2 
+        with:
+          repository: NEFSC/NEFSC-shiny-book
+          path: NEFSC-shiny-book
+
+      - name: Deploy shinybook to Shiny-Users-Group
+        uses: JamesIves/github-pages-deploy-action@4.1.1
+        with:
+          repository-name: NEFSC/Shiny-Users-Group
+          token: ${{ secrets.GH_PAT }}
+          branch: master # The branch the action should deploy to.
+          folder: chapters # The folder the action should deploy.
+          target-folder: vignettes
+          clean: false # Automatically remove deleted files from the deploy branch
+          
+      - name: Cancel action if rmds were not updated
+        if: ${{ env.deployment_status == 'skipped' }}
+          uses: andymckay/cancel-action@0.
+
+      - name: Checkout Shiny-Users-Group (if rmds updated)
+        uses: actions/checkout@v2 
+        with:
+          path: master
+          
+      - name: Render pkgdown (if rmds updated)
+        run: |
+          Rscript -e 'pkgdown::build_site()'
+          
+      - name: Deploy to Github (if rmds updated)
+        uses: JamesIves/github-pages-deploy-action@4.1.1
+        with:
+          repository-name: NEFSC/Shiny-Users-Group
+          token: ${{ secrets.GH_PAT }}
+          branch: master # The branch the action should deploy to.
+          folder: docs # The folder the action should deploy.
+          target-folder: docs
+          clean: false # Automatically remove deleted files from the deploy branch
