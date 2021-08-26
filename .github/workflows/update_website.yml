@@ -53,7 +53,7 @@ jobs:
           
       - name: Cancel action if rmds were not updated
         if: ${{ env.deployment_status == 'skipped' }}
-          uses: andymckay/cancel-action@0.
+        uses: andymckay/cancel-action@0.2
 
       - name: Checkout Shiny-Users-Group (if rmds updated)
         uses: actions/checkout@v2 
