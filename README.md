@@ -1,6 +1,35 @@
 # Shiny User Group
 
-test repo for sharing code and tutorials of topics discussed in the shiny meetings.
+A group of NEFSC employees and contractors that meet bi-weekly to discuss topics in R shiny and related tools. For more on how folks at the Center are using shiny check out our [shiny-book](https://nefsc.github.io/NEFSC-shiny-book/). 
+
+
+## Getting Started
+
+All apps developed by the Shiny Group are located on the **internal** server `shiny1`. Anyone who is inside of the NEFSC firewall (either physically or via VPN) should be able to run any of the apps developed by the Shiny Group. (Login [credentials](#creds) are required to contribute an app or to collaborate with others on the development of an app.) 
+
+Each app developed by a particular user will reside in a unique folder under their account name. The following url format is used to run any app `http://shiny1.nefsc.noaa.gov:3838/username/appname`. The app is physically located at `\\net.nefsc.noaa.gov\shiny1\username\appname` 
+
+## Required Credentials {#creds}
+
+Credentials are required to access the source code of any app.
+
+* An account/permissions to access the `shiny1` server
+* If working remotely then a VPN account is also required.
+
+The VPN account is needed (only if working remotely) to run the app and to update/develop an app on the server
+
+Please contact ITD for help in setting up accounts and providing access.
+
+## Saving the app
+
+A Shiny app can be developed:
+
+* locally (and then copied to the server) or
+* directly on the server. 
+
+Rstudio is installed on the Shiny (`shiny1`) server to help with live testing of an app. To launch Rstudio in a browser use the following url: `http://shiny1.nefsc.noaa.gov` then log in with credentials.
+
+Save apps to `\\net.nefsc.noaa.gov\shiny1\username\appname`
 
 
 ## Contact (in alphabetical order)
