@@ -38,3 +38,4 @@
 | Virtual | Episode 31 | September 07, 2021 | Click [here](https://docs.google.com/document/d/1I9NWh1F01-4yA0yBUGp_n7ZOzSI0rE55afFwZ9OnKmM/edit?usp=sharing) | None | 
 | Virtual | Episode 32 | September 21, 2021 | Click [here](https://docs.google.com/document/d/1cUhez8WXy133i95iI04_ykFhBAhtOdS58lA3dVUK70M/edit?usp=sharing) | None |
 | Virtual | Survey presentation | October 05, 2021 | Click [here](https://docs.google.com/document/d/1Lf-ewtk25Rz_DMWYpx9sWD2GN6E8EyUanuTylPyItOc/edit?usp=sharing) | Click [here](https://nefsc.github.io/NEFSC-ShinySurveyResults/survey_presentation#1) | 
+| Virtual | Episode 34 | October 19, 2021 | Click [here](https://docs.google.com/document/d/1IEkJ036lJK9fXGmPaj_TYR29e9HrvB2qP0HcKVEKwpE/edit?usp=sharing) | None | 
