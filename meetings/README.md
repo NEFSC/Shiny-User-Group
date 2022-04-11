@@ -48,4 +48,5 @@
 | Virtual | Episode 41 | February 22, 2022 | Click [here](https://docs.google.com/document/d/1v-uthvRzkNroVLoGq6K22tDfIjWGnbahZqYc6tdtCGM/edit?usp=sharing) | None |
 | Virtual | Episode 42 | March 08, 2022 | Click [here](https://docs.google.com/document/d/1JGIHlBACqI21QPhWHytttbZZ-UXy0vYM61LHeF5pHnA/edit?usp=sharing) | None |
 | Virtual | Episode 43 | March 22, 2022 | Click [here](https://docs.google.com/document/d/1iaW70e-mBIhbJLtEvvqY5NFqz7janSiaPqNrhlcQAuQ/edit?usp=sharing) | None |
-| Virtual | Episode 44 | April 05, 2022 | Click [here](https://docs.google.com/document/d/1rNQcV4PX5CF5A_t_tr1Fheo1bHpEJk7pGzRCIvw-8aM/edit?usp=sharing) | None |
+| Virtual | R package demo | April 05, 2022 | Click [here](https://docs.google.com/document/d/1rNQcV4PX5CF5A_t_tr1Fheo1bHpEJk7pGzRCIvw-8aM/edit?usp=sharing) | Slides [here](https://docs.google.com/presentation/d/12wnRtLDLjrDD29ZMCqpGk4JGpBSBSq5jddLCQsDStpY/edit?usp=sharing) & Video [here](https://drive.google.com/file/d/1AFmE7stXjUbmQoNuYtXcQICTJ_ncJwZk/view?usp=sharing) |
+| Virtual | Episode 45 | April 05, 2022 | Click [here](https://docs.google.com/document/d/1O23qGXGiSKDN4aLj4PNU_gJdHpaEF5lC4GnSuyoSr1U/edit?usp=sharing) | None |
