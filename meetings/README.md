@@ -51,3 +51,4 @@
 | Virtual | R package demo | April 05, 2022 | Click [here](https://docs.google.com/document/d/1rNQcV4PX5CF5A_t_tr1Fheo1bHpEJk7pGzRCIvw-8aM/edit?usp=sharing) | Slides [here](https://docs.google.com/presentation/d/12wnRtLDLjrDD29ZMCqpGk4JGpBSBSq5jddLCQsDStpY/edit?usp=sharing) & Video [here](https://drive.google.com/file/d/1AFmE7stXjUbmQoNuYtXcQICTJ_ncJwZk/view?usp=sharing) |
 | Virtual | Episode 45 | April 19, 2022 | Click [here](https://docs.google.com/document/d/1O23qGXGiSKDN4aLj4PNU_gJdHpaEF5lC4GnSuyoSr1U/edit?usp=sharing) | None |
 | Virtual | Episode 46 | May 03, 2022 | Click [here](https://docs.google.com/document/d/1RwtmKEBA373zTgedxrYqSfagoij5YqqE636Gk4KUANk/edit?usp=sharing) | None |
+| Virtual | Episode 47 | May 31, 2022 | Click [here](https://docs.google.com/document/d/1txDa4TMe1dseicdOJkPmCEYBWVi2aRr-YbP6UXYeMsA/edit?usp=sharing) | None |
