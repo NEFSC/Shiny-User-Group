@@ -1,5 +1,7 @@
 # Shiny User Group
 
+[![gitleaks](https://github.com/NEFSC/Shiny-User-Group/actions/workflows/secretScan.yml/badge.svg)](https://github.com/NEFSC/Shiny-User-Group/actions/workflows/secretScan.yml)
+
 A group of NEFSC employees and contractors that meet bi-weekly to discuss topics in R shiny and related tools. For more on how folks at the Center are using shiny check out our [shiny-book](https://nefsc.github.io/NEFSC-shiny-book/). 
 
 
