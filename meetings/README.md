@@ -55,3 +55,4 @@
 | Virtual | Episode 48 | June 28, 2022 | Click [here](https://docs.google.com/document/d/1dqjVjjS8voHZFgxgeeMoWmAb1VTow58VzkDGMD1XrJk/edit?usp=sharing) | None |
 | Virtual | Episode 49 | July 26, 2022 | Click [here](https://docs.google.com/document/d/19zdNlDAmrklFi9EfPUuNrxeqT4rMAHt86Mfsa973LLY/edit?usp=sharing) | None |
 | Virtual | Episode 50 | August 23, 2022 | Click [here](https://docs.google.com/document/d/173NRSrJOh7i0XPb74YGW_1Iyj3m6UjTH6AnqdQWkjRo/edit?usp=sharing) | None |
+| Virtual | Episode 51 | October 25, 2022 | Click [here](https://docs.google.com/document/d/1MsNOFzpOOA_sAf7MjKIl5xsIu1xgqICKOZoLvjAIrqs/edit?usp=sharing) | None |
