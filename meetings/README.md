@@ -57,3 +57,5 @@
 | Virtual | Episode 50 | August 23, 2022 | Click [here](https://docs.google.com/document/d/173NRSrJOh7i0XPb74YGW_1Iyj3m6UjTH6AnqdQWkjRo/edit?usp=sharing) | None |
 | Virtual | Episode 51 | October 25, 2022 | Click [here](https://docs.google.com/document/d/1MsNOFzpOOA_sAf7MjKIl5xsIu1xgqICKOZoLvjAIrqs/edit?usp=sharing) | None |
 | Virtual | NEFSCspatial Walkthrough | November 15, 2022 | Click [here](https://docs.google.com/document/d/1JIpP5Y-h5yrnx2hlisYvCox1ZRBdrkVq-iJADKEoO3k/edit?usp=sharing) | None |
+| Virtual | Episode 53 | January 24, 2023 | Click [here](https://docs.google.com/document/d/1jmX4N9hFeYYqL30nN0gVrwKezgQbi6HW0Rpo9pYi17A/edit?usp=share_link) | None |
+| Virtual | Episode 54 | February 28, 2023 | Click [here](https://docs.google.com/document/d/12VFV-csMp6An1m_RoO59HPqLAzi0gjJL0tydAkdo75Y/edit?usp=share_link) | None |
